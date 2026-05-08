@@ -14,7 +14,8 @@ Phase 3: Add features  (staff-led, on engineer's foundation)
 
 ## Phase 1: Build a demo (no engineer needed)
 
-Turn your idea into a working prototype. No database or production environment required — just build something you can show and get feedback on.
+Turn your idea into a working prototype. No production environment required — just build something you can show and get feedback on.
+If the demo needs real data, **Supabase** (free tier) is available. Claude Code will walk you through account creation and setup.
 
 ### Steps
 
@@ -42,16 +43,15 @@ Turn your idea into a working prototype. No database or production environment r
 
 ---
 
-## Phase 2: Engineer prepares the production environment (you wait)
+## Phase 2: Engineer reviews and hardens the code (you wait)
 
 Nothing for staff to do here. The engineer will:
 
-- Review and clean up the demo
-- Design and build the database (table structure)
-- Set up authentication (login)
-- Implement API connections and backend logic
-- Set up dev and production environments (Vercel, etc.)
-- Create a new repository for staff to pull and continue working from
+- Review what was built in the demo
+- Fix any security vulnerabilities
+- Set up Vercel environments and production env vars
+- Polish and clean up the code
+- Activate Phase 3 protection (creates `.claude/phase3.lock`)
 
 Once you receive a "ready" notification, move to Phase 3.
 

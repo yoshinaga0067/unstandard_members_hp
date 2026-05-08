@@ -1,12 +1,20 @@
 #!/bin/sh
 # protect-foundation.sh
 # Refuses Write/Edit on engineer-owned foundation files.
+# Only activates when .claude/phase3.lock exists (engineer has signed off Phase 2).
+# In Phase 1 (no lock file), all files are freely editable.
 # Engineers can bypass with CLAUDE_ENGINEER_OVERRIDE=1.
 
 set -eu
 
 if [ "${CLAUDE_ENGINEER_OVERRIDE:-0}" = "1" ]; then
   echo "[hook] protect-foundation: engineer override active" >&2
+  exit 0
+fi
+
+# Phase detection: engineer creates .claude/phase3.lock during Phase 2 handoff.
+# Without it, we are in Phase 1 — full creative freedom, no file restrictions.
+if [ ! -f "./.claude/phase3.lock" ]; then
   exit 0
 fi
 
@@ -17,7 +25,6 @@ if [ -z "$FILE_PATH" ]; then
   exit 0
 fi
 
-# Normalize: just look at the basename + a few path segments
 BASENAME="$(basename "$FILE_PATH")"
 
 is_protected=0

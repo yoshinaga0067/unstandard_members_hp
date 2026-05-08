@@ -7,9 +7,9 @@ This document is for **engineers**, not staff. It explains the three-phase proje
 ```
 Phase 1: Staff build a demo from this template (no engineer)
     ↓
-Phase 2: YOU take the demo, add proper backend, set up environments
+Phase 2: YOU review, polish, fix vulnerabilities, set up Vercel, activate Phase 3 lock
     ↓
-Phase 3: Staff pull your new repo and add features on top
+Phase 3: Staff continue adding features on the hardened codebase
 ```
 
 ## What this template gives you
@@ -22,32 +22,45 @@ A baseline `.claude/` directory with:
 
 Plus docs (`CLAUDE.md`, `README.md`, `docs/WORKFLOW.md`, `docs/TECH-STACK.md`, `docs/GLOSSARY-QUICK.md`).
 
-There is intentionally **no application code** in this template. Staff scaffold the framework themselves in Phase 1.
+There is intentionally **no application code** in this template. Staff scaffold everything themselves in Phase 1.
 
-## Your role: Phase 2 handoff
+## Phase 1: What staff do (without you)
 
-When staff say "the demo is done," you take over:
+Staff clone this template and build freely — UI, database, auth, middleware, whatever their idea needs. Claude Code guides them with good patterns (env vars for secrets, TypeScript, Tailwind, Supabase for data) but places **no restrictions** on what files they can create or modify.
 
-1. **Review the demo** — understand what they built and what needs to become production-grade
-2. **Create a new repo** from this template (or fork/copy the demo repo)
-3. **Initialize the framework properly** if it isn't already:
-   - `npm create next-app@latest .` (TypeScript on, Tailwind on, App Router on)
-   - Or keep what staff scaffolded if it's clean enough
-4. **Merge in the demo UI** — bring over the pages/components staff built; discard any quick-and-dirty logic
-5. **Set up the production foundation:**
-   - `lib/supabase/` — Supabase client (the protect-foundation hook will guard this)
-   - `middleware.ts` — auth middleware (also protected)
-   - `app/api/auth/*` — auth routes (also protected)
-   - `supabase/migrations/` — schema + RLS policies (**enable RLS on every table**)
-6. **Configure environments:**
+The only universal guardrails that apply in Phase 1:
+- No pushing to `main` directly
+- No hardcoding secrets in source files
+
+Everything else is open.
+
+## Your role: Phase 2 review
+
+When staff say "the demo is done," you take over. Your job is **not** to rebuild from scratch — it's to review, harden, and prepare for production.
+
+1. **Pull the demo and review** — understand what they built, read through the code
+2. **Fix security issues** — look for: hardcoded secrets, missing input validation, CORS wildcards, insecure auth patterns, missing RLS on Supabase tables. Run `/security-review` if it helps.
+3. **Polish the code** — clean up quick-and-dirty logic, add proper error handling, improve TypeScript types
+4. **Set up Vercel environments:**
    - Add real values to Vercel env vars (dev + prod)
-   - Update `.env.example` with placeholder names only — never commit real values
-7. **Branch setup:**
-   - Push initial code to `main`
+   - Verify `.env.example` has all the right placeholder names
+5. **Branch setup (if not already done):**
+   - Push to `main`
    - Create `develop` branch
    - Set branch protection on `main` (require PR review)
-8. **Hand off back to staff:**
-   - Tell them: "準備完了です。このリポジトリをClone して `/start` してください。"
+6. **Activate Phase 3 protection** — this is the key step:
+
+```sh
+touch .claude/phase3.lock
+git add .claude/phase3.lock
+git commit -m "フェーズ3移行：基盤保護を有効化"
+git push origin main
+```
+
+   Once `phase3.lock` exists, the `protect-foundation.sh` hook activates and blocks staff from modifying foundation files.
+
+7. **Hand off back to staff:**
+   - Tell them: "準備完了です。最新のコードを pull して `/start` してください。"
 
 ## How the guardrails work
 
@@ -61,9 +74,9 @@ The deny list is the second line of defense. The hooks below are the first.
 ### Hooks (`.claude/hooks/*.sh`)
 All three are **PreToolUse, blocking** (exit 2 stops the tool call). They read tool input from stdin as JSON.
 
-- **`block-main-push.sh`** — refuses any `git push` targeting main/master, including `--force` variants
-- **`scan-secrets.sh`** — regex-scans Write/Edit content for Stripe/Slack/GitHub/AWS keys, JWTs, RSA private keys, and `(API_KEY|SECRET|PASSWORD|TOKEN)=<long-value>`. Skips `.env.example` and `.md` files.
-- **`protect-foundation.sh`** — refuses Write/Edit on `.env*` (except `.env.example`), `middleware.*`, `next.config.*`, `tsconfig.json`, `package.json`, `app/api/auth/*`, `lib/supabase/*`, `supabase/*`
+- **`block-main-push.sh`** — refuses any `git push` targeting main/master, including `--force` variants. Applies always (Phase 1 and Phase 3).
+- **`scan-secrets.sh`** — regex-scans Write/Edit content for Stripe/Slack/GitHub/AWS keys, JWTs, RSA private keys, and `(API_KEY|SECRET|PASSWORD|TOKEN)=<long-value>`. Skips `.env.example` and `.md` files. Applies always.
+- **`protect-foundation.sh`** — refuses Write/Edit on `.env*` (except `.env.example`), `middleware.*`, `next.config.*`, `tsconfig.json`, `package.json`, `app/api/auth/*`, `lib/supabase/*`, `supabase/*`. **Only activates when `.claude/phase3.lock` exists.** In Phase 1, this hook exits immediately without blocking anything.
 
 Every hook honors `CLAUDE_ENGINEER_OVERRIDE=1`. To run a one-off engineer session that bypasses the guardrails:
 
@@ -92,7 +105,4 @@ To **add a hook** that should apply to every project going forward, add it to th
 - The hook scripts themselves — they need to be portable POSIX `/bin/sh` for macOS staff
 - The slash command names — staff have memorized them, and CLAUDE.md references them
 - The `CLAUDE_ENGINEER_OVERRIDE` env var name — documented for engineers across projects
-
-## Tier note
-
-The "Tier 1 / Tier 2" classification has been deprecated. **Every project gets the same baseline guardrails.** Relax per project if a specific case warrants it, but the safe default is to leave them on.
+- The `.claude/phase3.lock` filename — CLAUDE.md and the hook both reference it by this exact name

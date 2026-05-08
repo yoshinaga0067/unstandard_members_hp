@@ -4,13 +4,13 @@
 
 This project belongs to a housing and architectural home design company. Non-technical staff use Claude Code to build apps and demos. Projects go through three phases:
 
-- **Phase 1 — Demo**: Staff build a prototype from this template with no engineer involved. Full creative freedom. No database or auth yet.
-- **Phase 2 — Engineer handoff**: The engineer takes the demo, adds the proper database, authentication, backend logic, and sets up dev/prod environments in a new repository.
-- **Phase 3 — Features**: Staff pull the engineer's repository and continue adding features on top of the production foundation.
+- **Phase 1 — Demo**: Staff build a prototype from this template with no engineer involved. Full creative freedom — database, auth, middleware, anything the idea needs. Claude handles the technical setup and guides staff step by step.
+- **Phase 2 — Engineer review**: The engineer reviews what staff built, polishes the code, fixes security vulnerabilities, sets up Vercel environments, and creates `.claude/phase3.lock` to activate foundation protection before handing back.
+- **Phase 3 — Features**: Staff continue adding features on top of the engineer-reviewed foundation.
 
-**Detect which phase you are in** by checking whether foundation files exist (middleware, supabase config, auth routes, etc.):
-- If they don't exist → Phase 1. Build freely. No foundation restrictions apply.
-- If they exist → Phase 3. Treat them as engineer-owned and do not modify them.
+**Detect which phase you are in** by checking for `.claude/phase3.lock` in the project root:
+- If it does not exist → Phase 1. Full creative freedom. No restrictions apply.
+- If it exists → Phase 3. Foundation files are engineer-owned — do not modify them.
 
 Staff do not know programming — be helpful, explain your changes in simple Japanese, and keep things clean.
 
@@ -36,7 +36,7 @@ The user is NOT a programmer. They do not understand code. Follow these rules:
 
 ## IMPORTANT: Do not modify the foundation (Phase 3 only)
 
-This rule applies **only in Phase 3** — when the engineer has already set up the repository. Foundation files are protected by hooks that will block edits automatically.
+This rule applies **only when `.claude/phase3.lock` exists** — meaning the engineer has reviewed and signed off the project. Foundation files are protected by hooks that will block edits automatically.
 
 Do NOT modify these files unless the engineer explicitly approved:
 
@@ -52,7 +52,7 @@ If the user asks to change any of these in Phase 3, respond:
 
 (This is part of the foundation set up by engineering. If changes are needed, please consult the engineer.)
 
-In **Phase 1 (demo)**, these restrictions do not apply — build freely.
+In **Phase 1** (no `.claude/phase3.lock`), these restrictions do not apply — build freely.
 
 ## Framework
 
@@ -88,7 +88,9 @@ Then proceed with normal work:
 2. Commit frequently with Japanese messages
 3. When ready to publish: push develop and create a PR to main
 
-If the user asks to "publish" or "deploy" or "公開して", push develop and create a pull request to main. Do NOT deploy directly. Always remind them that engineering review is needed.
+If the user asks to "publish" or "deploy" or "公開して":
+- **Phase 1** (no `.claude/phase3.lock`): run the `/publish` command, which deploys a Vercel preview to the staff member's own Vercel account. No engineer review required — it's a demo preview.
+- **Phase 3** (`.claude/phase3.lock` exists): push develop and create a pull request to main. Do NOT deploy directly. Remind them that engineering review is needed before going live.
 
 ## Security rules (CRITICAL)
 
@@ -117,13 +119,20 @@ If the user asks to "publish" or "deploy" or "公開して", push develop and cr
 - Set proper CORS headers — never use Access-Control-Allow-Origin: *
 
 ### Supabase (if this project uses a database)
-- Use the Supabase client library (@supabase/supabase-js)
-- NEVER hardcode the Supabase URL or anon key — use environment variables (NEXT_PUBLIC_SUPABASE_URL, NEXT_PUBLIC_SUPABASE_ANON_KEY)
-- Always enable Row Level Security (RLS) on tables — ask engineering if unsure
-- Use the existing Supabase Auth setup — never build custom auth
-- For file uploads, use Supabase Storage
-- Keep database queries on the server side when possible
-- Do NOT modify the database schema (tables, columns, RLS policies) — if new tables or columns are needed, tell the user to ask the engineer
+
+**Phase 1 (no `.claude/phase3.lock`) — full freedom:**
+Set up Supabase yourself whenever the demo needs data or auth:
+1. Ask the user: "Supabaseのアカウントはお持ちですか？なければ supabase.com で無料登録してください。登録後、新しいプロジェクトを作成して、Settings → API にある URL と anon key を教えてください。"
+2. Install: `npm install @supabase/supabase-js`
+3. Create `lib/supabase/client.ts` using `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY`
+4. Write the keys into `.env.local` (gitignored — safe), add placeholders to `.env.example`
+5. Set up tables, auth, storage, middleware — anything the demo needs
+6. Always enable RLS on every table — guide the user to turn it on in the dashboard
+
+**Phase 3 (`.claude/phase3.lock` exists) — engineer-owned:**
+- Use the existing Supabase setup the engineer prepared — do not replace or reconfigure it
+- NEVER hardcode keys — always use environment variables
+- Do NOT modify the database schema, RLS policies, or auth config — tell the user to ask the engineer if changes are needed
 
 ### Data handling
 - Only send the minimum required data to the client/browser
