@@ -1,217 +1,215 @@
-# CLAUDE.md — Project Rules for Claude Code
+# CLAUDE.md — Claude Code プロジェクトルール
 
-## About this project
+## このプロジェクトについて
 
-This project belongs to a housing and architectural home design company. Non-technical staff use Claude Code to build apps and demos. Projects go through three phases:
+このプロジェクトは住宅・建築デザイン会社のものです。非エンジニアのスタッフが Claude Code を使ってアプリやデモを作ります。プロジェクトは3つのフェーズで進みます：
 
-- **Phase 1 — Demo**: Staff build a prototype from this template with no engineer involved. Full creative freedom — database, auth, middleware, anything the idea needs. Claude handles the technical setup and guides staff step by step.
-- **Phase 2 — Engineer review**: The engineer reviews what staff built, polishes the code, fixes security vulnerabilities, sets up Vercel environments, and creates `.claude/phase3.lock` to activate foundation protection before handing back.
-- **Phase 3 — Features**: Staff continue adding features on top of the engineer-reviewed foundation.
+- **フェーズ1 — デモ作成**：エンジニア不在でスタッフがこのテンプレートからプロトタイプを作ります。完全な自由度があります — データベース、認証、ミドルウェアなど、アイデアに必要なものは何でも作れます。Claude がステップごとに技術的なセットアップを担当します。
+- **フェーズ2 — エンジニアレビュー**：エンジニアがスタッフの成果物を確認・整理し、セキュリティの脆弱性を修正し、Vercel 環境をセットアップし、`.claude/phase3.lock` を作成して基盤保護を有効化してからスタッフに返却します。
+- **フェーズ3 — 機能追加**：エンジニアがレビューした基盤の上で、スタッフが機能を追加し続けます。
 
-**Detect which phase you are in** by checking for `.claude/phase3.lock` in the project root:
-- If it does not exist → Phase 1. Full creative freedom. No restrictions apply.
-- If it exists → Phase 3. Foundation files are engineer-owned — do not modify them.
+**現在のフェーズの確認方法**：プロジェクトルートに `.claude/phase3.lock` があるか確認する：
+- 存在しない → フェーズ1。完全な自由度。制限なし。
+- 存在する → フェーズ3。基盤ファイルはエンジニアの管理下 — 変更しないこと。
 
-Staff do not know programming — be helpful, explain your changes in simple Japanese, and keep things clean.
+スタッフはプログラミングを知りません — 親切に、わかりやすい日本語で変更内容を説明し、クリーンに保ちましょう。
 
-## Slash commands
+## スラッシュコマンド
 
-Staff use four short Japanese-friendly commands instead of typing the long instructions themselves:
+スタッフが長い指示を入力する代わりに使う、日本語フレンドリーな4つのコマンド：
 
-- `/start` — Switch to `develop`, pull the latest, and summarize the project state in Japanese. Use this at the start of every session.
-- `/save` — Stage and commit current changes on `develop` with an auto-generated Japanese commit message. Refuses if the branch is `main`.
-- `/check` — Read-only sanity scan: hardcoded secrets, type errors, uncommitted changes, current branch.
-- `/publish` — Run the security pre-publish agent, update `PROJECT-OVERVIEW.md`, push `develop`, and open a pull request. Reminds staff that engineering review is required before the change is live.
+- `/start` — `develop` に切り替え、最新を pull して、プロジェクトの状態を日本語で要約します。セッション開始時に必ず使います。
+- `/save` — `develop` 上の変更をステージングして、自動生成された日本語コミットメッセージでコミットします。`main` ブランチでは実行を拒否します。
+- `/check` — 読み取り専用の安全確認：ハードコードされた秘密情報、型エラー、未コミットの変更、現在のブランチを確認します。
+- `/publish` — セキュリティ事前確認エージェントを実行し、`PROJECT-OVERVIEW.md` を更新し、`develop` をプッシュして、プルリクエストを作成します。変更が公開されるにはエンジニアのレビューが必要なことをスタッフに案内します。
 
-If the user types Japanese phrases like "公開して" / "保存して" / "始めて", treat them as the equivalent slash commands.
+「公開して」「保存して」「始めて」などの日本語フレーズが入力された場合は、対応するスラッシュコマンドとして扱います。
 
-## How to interact with the user
+## ユーザーとの対話方法
 
-The user is NOT a programmer. They do not understand code. Follow these rules:
+ユーザーはプログラマーではありません。コードを理解しません。以下のルールに従ってください：
 
-- For regular changes (UI, design, layout, text, adding components, styling): just DO IT. Do not ask permission to edit files. Do not show code diffs. Do not ask "can I modify this file?" — just make the change and describe what you did in simple Japanese.
-- ONLY ask for confirmation when the change involves something critical: database structure, authentication, API routes, environment variables, or deleting existing features.
-- Never ask technical questions like "should I use useState or useReducer?" — just make the best decision yourself.
-- When explaining what you did, describe the RESULT ("ヘッダーの色を青に変えました"), not the CODE ("useState を追加しました").
+- 通常の変更（UI、デザイン、レイアウト、テキスト、コンポーネントの追加、スタイリング）は**そのままやってください**。ファイルを編集する許可を求めないこと。コードの差分を見せないこと。「このファイルを変更してもいいですか？」と聞かないこと — 変更して、何をしたかをわかりやすい日本語で説明するだけでよいです。
+- 確認が必要なのはクリティカルな変更のみ：データベース構造、認証、APIルート、環境変数、既存機能の削除。
+- 「useState と useReducer、どちらを使うべきですか？」のような技術的な質問はしないこと — 自分で最善の判断をしてください。
+- 何をしたかを説明するときは、コード（「useState を追加しました」）ではなく、結果（「ヘッダーの色を青に変えました」）を伝えること。
 
-## IMPORTANT: Do not modify the foundation (Phase 3 only)
+## 重要：基盤ファイルを変更しないこと（フェーズ3のみ）
 
-This rule applies **only when `.claude/phase3.lock` exists** — meaning the engineer has reviewed and signed off the project. Foundation files are protected by hooks that will block edits automatically.
+このルールは **`.claude/phase3.lock` が存在する場合のみ** 適用されます — エンジニアがレビューして承認済みということです。基盤ファイルはフックによって自動的に保護されています。
 
-Do NOT modify these files unless the engineer explicitly approved:
+エンジニアが明示的に承認した場合を除き、以下のファイルは変更しないこと：
 
-- Database schema or Supabase configuration
-- Authentication setup
-- API route structure or backend proxy logic
-- Environment variable configuration (`.env*` files)
-- Middleware or security settings
+- データベーススキーマまたは Supabase の設定
+- 認証のセットアップ
+- APIルートの構造またはバックエンドプロキシのロジック
+- 環境変数の設定（`.env*` ファイル）
+- ミドルウェアまたはセキュリティ設定
 
-If the user asks to change any of these in Phase 3, respond:
+フェーズ3でこれらの変更をユーザーから求められた場合は以下のように答えること：
 
-"この部分はエンジニアが設計した基盤部分です。変更が必要な場合は、エンジニアに相談してください。"
+「この部分はエンジニアが設計した基盤部分です。変更が必要な場合は、エンジニアに相談してください。」
 
-(This is part of the foundation set up by engineering. If changes are needed, please consult the engineer.)
+**フェーズ1**（`.claude/phase3.lock` なし）では、これらの制限は適用されません — 自由に作ってください。
 
-In **Phase 1** (no `.claude/phase3.lock`), these restrictions do not apply — build freely.
+## フレームワーク
 
-## Framework
+**新規プロジェクトはデフォルトで Next.js（App Router）を使用してください。** 顧客向けアプリ、認証が必要なもの、バックエンドに接続するものはすべて Next.js を使用すること — SEO のための SSR、バックエンドプロキシとしての API ルート、Vercel デプロイの組み込みサポートが理由です。
 
-**Default to Next.js (App Router) for new projects.** Customer-facing apps, anything with auth, and anything that connects to a backend should use Next.js — SSR for SEO, API routes as a backend proxy, and built-in support for Vercel deployment.
+**Vite + React はシンプルな社内ツールのみに使用** （認証なし、バックエンドなし、SEO 不要のもの）。迷ったときは Next.js を選択してください。
 
-**Use Vite + React only for simple internal tools** (no auth, no backend, no SEO requirements). When in doubt, choose Next.js.
+このプロジェクトでエンジニアがすでにフレームワークをセットアップしている場合は、フレームワークを変更したり大きなアーキテクチャ変更を加えたりしないこと。既存の構造の中で機能を追加してください。
 
-If the engineer has already set up the framework for this project, do not switch frameworks or make major architectural changes. Build features within the existing structure.
+**エンジニアの承認なしに MCP サーバー、ブラウザ拡張機能、サードパーティの Claude Code プラグインをインストールしないこと。** サプライチェーンリスクが生じる可能性があります。
 
-**Do not install MCP servers, browser extensions, or third-party Claude Code plugins on these projects without engineering approval.** They can introduce supply-chain risk.
+## Git ルール（重要）
 
-## Git rules (CRITICAL)
-
-- **NEVER push directly to the main branch**
-- Always work on the `develop` branch
-- At the start of a project, create the `develop` branch from main and do ALL work there
-- Write commit messages in Japanese, keeping them short and clear
-- Example commit messages:
+- **main ブランチへは絶対に直接プッシュしないこと**
+- 常に `develop` ブランチで作業すること
+- プロジェクト開始時に main から `develop` ブランチを作成し、すべての作業をそこで行うこと
+- コミットメッセージは日本語で、短く明確に書くこと
+- コミットメッセージの例：
   - "ログイン画面を追加"
   - "お客様データのバリデーションを実装"
   - "API接続のエラーハンドリングを改善"
-- When the user says they are done or want to publish, push the `develop` branch and create a pull request to main
-- Remind the user: "プルリクエストを作成しました。エンジニアのレビューを待ってから公開されます。" (PR created. It will be published after engineering review.)
+- ユーザーが完了または公開を希望したら、`develop` ブランチをプッシュして main へのプルリクエストを作成すること
+- ユーザーへの案内：「プルリクエストを作成しました。エンジニアのレビューを待ってから公開されます。」
 
-## Git workflow for the user
+## ユーザーの Git ワークフロー
 
-EVERY TIME the user starts a new session or begins working, BEFORE doing anything else:
+**毎回セッション開始時または作業開始前に、他の作業より先に：**
 1. git checkout develop
 2. git pull origin develop
 
-Then proceed with normal work:
-1. Do all work on develop
-2. Commit frequently with Japanese messages
-3. When ready to publish: push develop and create a PR to main
+その後、通常の作業を進める：
+1. すべての作業を develop で行う
+2. 日本語メッセージで頻繁にコミットする
+3. 公開の準備ができたら：develop をプッシュして main へ PR を作成
 
-If the user asks to "publish" or "deploy" or "公開して":
-- **Phase 1** (no `.claude/phase3.lock`): run the `/publish` command, which deploys a Vercel preview to the staff member's own Vercel account. No engineer review required — it's a demo preview.
-- **Phase 3** (`.claude/phase3.lock` exists): push develop and create a pull request to main. Do NOT deploy directly. Remind them that engineering review is needed before going live.
+ユーザーが「公開」「デプロイ」「公開して」と言った場合：
+- **フェーズ1**（`.claude/phase3.lock` なし）：`/publish` コマンドを実行し、スタッフ自身の Vercel アカウントに Vercel プレビューをデプロイします。エンジニアのレビューは不要 — デモプレビューです。
+- **フェーズ3**（`.claude/phase3.lock` あり）：develop をプッシュして main へのプルリクエストを作成します。直接デプロイしないこと。本番公開前にエンジニアのレビューが必要なことを伝えること。
 
-## Security rules (CRITICAL)
+## セキュリティルール（重要）
 
-### Environment variables
-- NEVER hardcode API keys, passwords, tokens, or secrets in the code
-- Always use environment variables for sensitive values
-- Use .env.local for local development (this file is gitignored)
-- Reference env vars using process.env.VARIABLE_NAME (Next.js) or import.meta.env.VITE_VARIABLE_NAME (Vite)
-- When you need a new secret, add it to .env.example with a placeholder and tell the user to ask engineering to set the real value in Vercel
+### 環境変数
+- APIキー、パスワード、トークン、秘密情報をコードにハードコードしないこと
+- 機密性の高い値には常に環境変数を使用すること
+- ローカル開発には `.env.local` を使用すること（このファイルは gitignore 済み）
+- 環境変数の参照方法：`process.env.VARIABLE_NAME`（Next.js）または `import.meta.env.VITE_VARIABLE_NAME`（Vite）
+- 新しい秘密情報が必要な場合は、`.env.example` にプレースホルダーとして追加し、実際の値は Vercel でエンジニアに設定してもらうようユーザーに伝えること
 
-### User input
-- ALWAYS validate and sanitize user input on both client and server side
-- Use zod or similar for schema validation
-- Never trust client-side data — validate again on the server
-- Escape HTML output to prevent XSS attacks
+### ユーザー入力
+- クライアント側とサーバー側の両方でユーザー入力を常にバリデーション・サニタイズすること
+- スキーマバリデーションに zod などを使用すること
+- クライアントサイドのデータを信頼しないこと — サーバーで再度バリデーションすること
+- XSS 攻撃を防ぐために HTML 出力をエスケープすること
 
-### Authentication
-- Use established auth libraries (NextAuth.js, Auth.js) — never build auth from scratch
-- Store session tokens securely (httpOnly cookies, not localStorage)
-- Always check authentication on API routes, not just on the frontend
+### 認証
+- 確立された認証ライブラリ（NextAuth.js、Auth.js）を使用すること — 認証をゼロから作らないこと
+- セッショントークンは安全に保存すること（httpOnly クッキー、localStorage は使用しない）
+- API ルートで認証を確認すること — フロントエンドだけでは不十分
 
-### API connections
-- Use HTTPS for all external API calls
-- Do not expose backend API URLs or internal endpoints to the browser
-- Use Next.js API routes or server actions as a proxy to backend services
-- Set proper CORS headers — never use Access-Control-Allow-Origin: *
+### API接続
+- すべての外部 API 呼び出しに HTTPS を使用すること
+- バックエンド API の URL や内部エンドポイントをブラウザに露出しないこと
+- バックエンドサービスへのプロキシとして Next.js API ルートまたはサーバーアクションを使用すること
+- 適切な CORS ヘッダーを設定すること — Access-Control-Allow-Origin: * は絶対に使用しないこと
 
-### Supabase (if this project uses a database)
+### Supabase（このプロジェクトがデータベースを使用する場合）
 
-**Phase 1 (no `.claude/phase3.lock`) — full freedom:**
-Set up Supabase yourself whenever the demo needs data or auth:
-1. Ask the user: "Supabaseのアカウントはお持ちですか？なければ supabase.com で無料登録してください。登録後、新しいプロジェクトを作成して、Settings → API にある URL と anon key を教えてください。"
-2. Install: `npm install @supabase/supabase-js`
-3. Create `lib/supabase/client.ts` using `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY`
-4. Write the keys into `.env.local` (gitignored — safe), add placeholders to `.env.example`
-5. Set up tables, auth, storage, middleware — anything the demo needs
-6. Always enable RLS on every table — guide the user to turn it on in the dashboard
+**フェーズ1（`.claude/phase3.lock` なし）— 完全な自由：**
+デモにデータや認証が必要な場合は自分でSupabaseをセットアップすること：
+1. ユーザーに確認する：「Supabaseのアカウントはお持ちですか？なければ supabase.com で無料登録してください。登録後、新しいプロジェクトを作成して、Settings → API にある URL と anon key を教えてください。」
+2. インストール：`npm install @supabase/supabase-js`
+3. `NEXT_PUBLIC_SUPABASE_URL` と `NEXT_PUBLIC_SUPABASE_ANON_KEY` を使用して `lib/supabase/client.ts` を作成する
+4. キーを `.env.local`（gitignore 済み — 安全）に書き込み、`.env.example` にプレースホルダーを追加する
+5. テーブル、認証、ストレージ、ミドルウェアなど — デモに必要なものは何でもセットアップする
+6. すべてのテーブルで必ず RLS を有効化すること — ダッシュボードでオンにするようユーザーを案内する
 
-**Phase 3 (`.claude/phase3.lock` exists) — engineer-owned:**
-- Use the existing Supabase setup the engineer prepared — do not replace or reconfigure it
-- NEVER hardcode keys — always use environment variables
-- Do NOT modify the database schema, RLS policies, or auth config — tell the user to ask the engineer if changes are needed
+**フェーズ3（`.claude/phase3.lock` あり）— エンジニア管理：**
+- エンジニアが準備した既存の Supabase セットアップを使用すること — 置き換えたり再設定したりしないこと
+- キーを絶対にハードコードしないこと — 常に環境変数を使用すること
+- データベーススキーマ、RLS ポリシー、認証設定を変更しないこと — 変更が必要な場合はエンジニアに相談するようユーザーに伝えること
 
-### Data handling
-- Only send the minimum required data to the client/browser
-- Do not log sensitive data (passwords, tokens, personal info)
-- Handle errors gracefully — never expose stack traces or internal errors to users
+### データ処理
+- クライアント・ブラウザに送るデータは必要最小限にすること
+- 機密データ（パスワード、トークン、個人情報）をログに出力しないこと
+- エラーを適切に処理すること — スタックトレースや内部エラーをユーザーに見せないこと
 
-## Coding standards
+## コーディング規約
 
-- Use clean, readable code with clear structure
-- Add comments in English for important sections — the engineer reads the code, so comments must be in English
-- Use TypeScript for type safety
-- Use Tailwind CSS for styling (install if not present)
-- Use responsive design — mobile-first approach
-- Keep dependencies minimal — do not install unnecessary packages
-- Use semantic HTML elements
-- Implement proper error handling and loading states
-- Add proper form validation with user-friendly Japanese error messages
+- クリーンで読みやすいコードを、明確な構造で書くこと
+- 重要なセクションのコメントは英語で書くこと — エンジニアがコードを読むため、コメントは英語である必要があります
+- 型安全性のために TypeScript を使用すること
+- スタイリングに Tailwind CSS を使用すること（未インストールの場合はインストールする）
+- レスポンシブデザインを使用すること — モバイルファーストのアプローチ
+- 依存関係を最小限に保つこと — 不要なパッケージをインストールしないこと
+- セマンティックな HTML 要素を使用すること
+- 適切なエラーハンドリングとローディング状態を実装すること
+- ユーザーフレンドリーな日本語エラーメッセージでフォームバリデーションを追加すること
 
-## Design guidelines
+## デザインガイドライン
 
-- Use modern, clean design appropriate for a professional housing company
-- Default fonts: "Noto Sans JP" for Japanese, system sans-serif for English
-- Ensure proper Japanese typography (line-height: 1.8 for body text)
-- All text should be in Japanese unless the user specifies otherwise
-- Responsive breakpoints: mobile (375px), tablet (768px), desktop (1024px+)
-- Show loading indicators for async operations
-- Display friendly error messages in Japanese
+- プロフェッショナルな住宅会社にふさわしい、モダンでクリーンなデザインを使用すること
+- デフォルトフォント：日本語には "Noto Sans JP"、英語にはシステムのサンセリフ
+- 適切な日本語タイポグラフィを確保すること（本文の line-height: 1.8）
+- ユーザーが指定しない限り、すべてのテキストは日本語にすること
+- レスポンシブブレークポイント：モバイル（375px）、タブレット（768px）、デスクトップ（1024px+）
+- 非同期操作にはローディングインジケーターを表示すること
+- エラーメッセージは日本語でわかりやすく表示すること
 
-## Project structure (Next.js)
+## プロジェクト構成（Next.js）
 
-If using Next.js, follow this structure:
-- /app — Pages and layouts (App Router)
-- /app/api — API routes (server-side only)
-- /components — Reusable UI components
-- /lib — Utility functions, API clients, validators
-- /types — TypeScript type definitions
-- /public — Static assets
+Next.js を使用する場合は以下の構成に従うこと：
+- /app — ページとレイアウト（App Router）
+- /app/api — API ルート（サーバーサイドのみ）
+- /components — 再利用可能な UI コンポーネント
+- /lib — ユーティリティ関数、API クライアント、バリデーター
+- /types — TypeScript 型定義
+- /public — 静的アセット
 
-## Project structure (Vite)
+## プロジェクト構成（Vite）
 
-If using Vite + React, follow this structure:
-- /src/pages — Page components
-- /src/components — Reusable UI components
-- /src/lib — Utility functions, API clients, validators
-- /src/types — TypeScript type definitions
-- /public — Static assets
+Vite + React を使用する場合は以下の構成に従うこと：
+- /src/pages — ページコンポーネント
+- /src/components — 再利用可能な UI コンポーネント
+- /src/lib — ユーティリティ関数、API クライアント、バリデーター
+- /src/types — TypeScript 型定義
+- /public — 静的アセット
 
-## PROJECT-OVERVIEW.md maintenance (CRITICAL)
+## PROJECT-OVERVIEW.md の管理（重要）
 
-There is a file called PROJECT-OVERVIEW.md in the root of this project. You MUST keep it updated. This file is written in English and serves as a living document for the engineer to understand the project at a glance.
+プロジェクトルートに `PROJECT-OVERVIEW.md` というファイルがあります。必ず最新の状態に保つこと。このファイルは英語で書き、エンジニアがプロジェクトをひと目で把握できるリビングドキュメントとして機能します。
 
-### When to update PROJECT-OVERVIEW.md
-- When the user says "公開して", "publish", "deploy", or "デプロイして"
-- When creating a pull request
-- Update it BEFORE pushing or creating the PR — include it in the same commit
+### PROJECT-OVERVIEW.md を更新するタイミング
+- ユーザーが「公開して」「publish」「deploy」「デプロイして」と言ったとき
+- プルリクエストを作成するとき
+- プッシュまたは PR 作成の**前に**更新すること — 同じコミットに含めること
 
-### How to update PROJECT-OVERVIEW.md
-- **Summary**: Write 2-3 sentences describing what the project is and who it's for. Update if the project scope changes.
-- **Features**: List every feature that has been built. Add new features as they are completed. Use short, clear descriptions. Example: "User login with email/password via Supabase Auth", "Property search with area and price filters"
-- **Pages**: List every page/route with a one-line description. Example: "/ — Homepage with property search", "/property/[id] — Property detail page with gallery and inquiry form", "/dashboard — User dashboard showing saved properties"
-- **Tech Stack**: List every major technology used with the reason it was chosen. Example: "Next.js | Framework | SSR for SEO + API routes for backend proxy", "Supabase | Database + Auth | Auto-generated API, built-in auth, dashboard for data viewing"
-- **External Connections**: List every external service the project connects to, what it's used for, and how it authenticates. Example: "Supabase | Database and auth | Anon key (public) + service role key (server only)", "Company PHP API | Property data | API token via env var"
-- **Environment Variables**: List every environment variable the project uses, its purpose, and where it's configured. Example: "NEXT_PUBLIC_SUPABASE_URL | Supabase project URL | Vercel", "API_KEY | Company backend API key | Vercel (server only)"
-- **Changelog**: Add a new row at the TOP of the changelog table with today's date and a brief summary of what changed since the last entry. Keep entries concise. Example: "2025-01-15 | Added user login flow, property search with filters, fixed form validation"
+### PROJECT-OVERVIEW.md の更新方法
+- **Summary**：プロジェクトが何で誰のためのものかを2〜3文で説明する。プロジェクトのスコープが変わった場合は更新する。
+- **Features**：作られた機能をすべてリストアップする。機能が完成したら追加する。短く明確な説明を使う。例："ユーザーログイン（Supabase Auth によるメール/パスワード）"、"エリアと価格フィルター付き物件検索"
+- **Pages**：すべてのページ/ルートを1行の説明付きでリストアップする。例："/ — 物件検索付きホームページ"、"/property/[id] — ギャラリーと問い合わせフォーム付き物件詳細ページ"
+- **Tech Stack**：使用している主要技術をすべて、選択理由付きでリストアップする。例："Next.js | フレームワーク | SEO のための SSR + バックエンドプロキシとしての API ルート"
+- **External Connections**：プロジェクトが接続するすべての外部サービス、用途、認証方法をリストアップする。
+- **Environment Variables**：プロジェクトで使用するすべての環境変数、用途、設定場所をリストアップする。
+- **Changelog**：変更履歴テーブルの**一番上に**今日の日付と前回からの変更内容の要約を追加する。簡潔に。
 
-### Rules
-- Always write in English
-- Keep it concise — this is a quick reference, not documentation
-- Do not remove previous changelog entries — only add new ones at the top
-- Do not include code snippets — just describe features and changes in plain language
-- Always list environment variables — this helps the engineer set them up in Vercel
+### ルール
+- 常に英語で書くこと
+- 簡潔に — これはクイックリファレンスであり、詳細なドキュメントではありません
+- 以前の変更履歴を削除しないこと — 新しいものを一番上に追加するだけ
+- コードスニペットを含めないこと — 機能と変更内容を平易な言葉で説明する
+- 環境変数は必ずリストアップすること — エンジニアが Vercel で設定する際に役立ちます
 
-## What NOT to do
+## やってはいけないこと
 
-- Do NOT hardcode any API keys, passwords, or secrets
-- Do NOT disable TypeScript strict mode
-- Do NOT use any, use proper types instead
-- Do NOT skip input validation
-- Do NOT store sensitive data in localStorage or sessionStorage
-- Do NOT expose internal API endpoints to the browser
-- Do NOT use English placeholder text — use Japanese placeholder text
-- Do NOT send more data to the browser than necessary
+- APIキー、パスワード、秘密情報をハードコードしないこと
+- TypeScript の strict モードを無効化しないこと
+- `any` を使わないこと — 適切な型を使うこと
+- 入力バリデーションを省略しないこと
+- 機密データを localStorage や sessionStorage に保存しないこと
+- 内部 API エンドポイントをブラウザに露出しないこと
+- 英語のプレースホルダーテキストを使わないこと — 日本語のプレースホルダーテキストを使うこと
+- 必要以上のデータをブラウザに送らないこと
