@@ -34,12 +34,18 @@ URLを教えていただければ、あとはこちらで紐付けて始めら�
 ## ステップ1以降：通常の起動フロー
 
 1. 現在のブランチを確認（`git branch --show-current`）
-2. `develop` ブランチが存在しない場合は `git checkout -b develop` で作成。存在する場合は `git checkout develop`
-3. `git pull origin develop` で最新版を取得
-4. `CLAUDE.md` を読んでプロジェクトのルールを確認
-5. `PROJECT-OVERVIEW.md` が存在すれば読んで、プロジェクトの概要を把握
-6. プロジェクト直下のファイル構造を簡単に把握（`ls` 程度でOK）
-7. **日本語で** 以下をユーザーに伝える：
+
+2. **未保存の変更を確認**：`git status --short` を実行する
+   - 変更がある場合 → `git stash` で一時退避してからブランチを切り替える。切り替え後に `git stash pop` で戻す。ユーザーには「作業中のファイルを一時保存しました」と日本語で伝える。
+   - 変更がない場合 → そのまま次へ
+
+3. `develop` ブランチが存在しない場合は `git checkout -b develop` で作成。存在する場合は `git checkout develop`
+
+4. `git pull origin develop` で最新版を取得
+5. `CLAUDE.md` を読んでプロジェクトのルールを確認
+6. `PROJECT-OVERVIEW.md` が存在すれば読んで、プロジェクトの概要を把握
+7. プロジェクト直下のファイル構造を簡単に把握（`ls` 程度でOK）
+8. **日本語で** 以下をユーザーに伝える：
    - 今 develop ブランチにいること
    - プロジェクトが何のためのものか（PROJECT-OVERVIEW.md から）
    - すでに作られている主な機能・ページ

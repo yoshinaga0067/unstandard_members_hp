@@ -60,9 +60,9 @@ esac
 
 # Foundation files by path
 case "$FILE_PATH" in
-  */app/api/auth/*|*/pages/api/auth/*)
+  */app/api/*|*/pages/api/*)
     is_protected=1
-    reason="認証APIルート"
+    reason="APIルート（バックエンド処理）"
     ;;
   */lib/supabase/*|*/lib/supabase.ts|*/lib/supabase.js)
     is_protected=1
@@ -77,7 +77,7 @@ esac
 if [ "$is_protected" = "1" ]; then
   cat >&2 <<EOF
 🚫 この部分はエンジニアが設計した基盤ファイルです：$reason
-   ファイル：$FILE_PATH
+   対象ファイル：$BASENAME
 
 ✅ 正しい手順：
    このファイルの変更が必要な場合は、エンジニアに相談してください。

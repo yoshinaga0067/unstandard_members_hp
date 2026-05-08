@@ -2,6 +2,8 @@
 
 ## Every project has three phases
 
+> `CLAUDE-EN.md` is the authoritative source for phase definitions. This file is the staff-facing operations guide.
+
 ```
 Phase 1: Build a demo  (staff-led, no engineer)
     ↓

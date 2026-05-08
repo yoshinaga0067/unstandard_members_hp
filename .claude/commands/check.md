@@ -7,9 +7,14 @@ description: コードの安全性チェック（読み取り専用）。秘密�
 以下を順に実行し、最後に日本語で要約してください。
 
 1. **秘密情報のチェック**：
-   - `rg -n 'sk_(live|test)_[A-Za-z0-9]{16,}' --glob '!.env*' --glob '!*.md'` を実行
-   - `rg -n 'AKIA[0-9A-Z]{16}' --glob '!.env*'` を実行
-   - `rg -n 'eyJ[A-Za-z0-9_-]{20,}\\.[A-Za-z0-9_-]{20,}\\.[A-Za-z0-9_-]{20,}' --glob '!*.md'` を実行
+   - まず `which rg` で ripgrep が使えるか確認する
+   - **ripgrep がある場合**：
+     - `rg -n 'sk_(live|test)_[A-Za-z0-9]{16,}' --glob '!.env*' --glob '!*.md'`
+     - `rg -n 'AKIA[0-9A-Z]{16}' --glob '!.env*'`
+     - `rg -n 'eyJ[A-Za-z0-9_-]{20,}\.[A-Za-z0-9_-]{20,}\.[A-Za-z0-9_-]{20,}' --glob '!*.md'`
+   - **ripgrep がない場合**（grep で代替）：
+     - `grep -rn --exclude-dir=node_modules --exclude-dir=.next --exclude-dir=dist --exclude='*.md' --exclude='.env*' 'sk_live_\|sk_test_' .`
+     - `grep -rn --exclude-dir=node_modules --exclude='*.md' --exclude='.env*' 'AKIA[0-9A-Z]\{16\}' .`
    - 何かヒットしたらそれは **NG**
 
 2. **型チェック**（`tsconfig.json` が存在する場合のみ）：

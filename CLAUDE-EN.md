@@ -14,6 +14,12 @@ This project belongs to a housing and architectural home design company. Non-tec
 
 Staff do not know programming — be helpful, explain your changes in simple Japanese, and keep things clean.
 
+## Language rule (CRITICAL)
+
+**Always respond, ask questions, and explain in Japanese.** File names, commands, and code may remain in English.
+
+The only exception: if the user says "explain in english during this session" or「英語で説明して」, switch to English for that session only. Return to Japanese at the start of the next session.
+
 ## Slash commands
 
 Staff use four short Japanese-friendly commands instead of typing the long instructions themselves:
@@ -23,7 +29,14 @@ Staff use four short Japanese-friendly commands instead of typing the long instr
 - `/check` — Read-only sanity scan: hardcoded secrets, type errors, uncommitted changes, current branch.
 - `/publish` — Run the security pre-publish agent, update `PROJECT-OVERVIEW.md`, push `develop`, and open a pull request. Reminds staff that engineering review is required before the change is live.
 
-If the user types Japanese phrases like "公開して" / "保存して" / "始めて", treat them as the equivalent slash commands.
+Treat the following Japanese phrases as their equivalent slash commands:
+
+| Phrase examples | Command |
+|---|---|
+| 「始めて」「スタート」「開始して」 / "start" | `/start` |
+| 「保存して」「セーブして」「コミットして」 / "save" | `/save` |
+| 「確認して」「チェックして」 / "check" | `/check` |
+| 「公開して」「デプロイして」「アップして」 / "publish" | `/publish` |
 
 ## How to interact with the user
 
