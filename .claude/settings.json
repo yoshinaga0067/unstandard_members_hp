@@ -22,6 +22,14 @@
       "Bash(git fetch:*)",
       "Bash(git init:*)",
       "Bash(git remote:*)",
+      "Bash(curl:*)",
+      "Bash(sleep:*)",
+      "Bash(sort:*)",
+      "Bash(uniq:*)",
+      "Bash(head:*)",
+      "Bash(tail:*)",
+      "Bash(tr:*)",
+      "Bash(which:*)",
       "Bash(git add:*)",
       "Bash(git commit:*)",
       "Bash(git push origin develop)",
@@ -46,7 +54,6 @@
     ],
     "ask": [
       "Bash(npx:*)",
-      "Bash(curl:*)",
       "Bash(wget:*)",
       "WebFetch",
       "WebSearch"
