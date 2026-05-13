@@ -3,6 +3,10 @@
 > **This file is automatically maintained by Claude Code. Do not edit manually.**
 > Updated every time the project is published or a pull request is created.
 
+## Design Theme
+
+[HARMONY / UNSTANDARD / Custom — set by `/start` on first run. Changing this later requires manual edit.]
+
 ## Summary
 
 [Claude Code will fill this in after understanding the project requirements]

@@ -48,7 +48,13 @@ description: アプリを公開する。フェーズ1はVercelプレビューURL
 
 7. **コミット & プッシュ**：
    - PROJECT-OVERVIEW.md（とvercel.jsonがあれば）の更新を `git commit -m "公開前にPROJECT-OVERVIEW.mdを更新"` でコミット
-   - `git push -u origin develop`
+   - `git remote get-url origin` でリモートを確認
+     - **リモートあり** → `git push -u origin develop` を実行
+     - **リモートなし** → プッシュをスキップ。ユーザーに一言伝える：
+       ```
+       💡 GitHub は未連携のため、Vercel にだけ公開します。
+          GitHub にも保存したくなったら「GitHub に紐付けて」と教えてください。
+       ```
 
 8. **Vercelログイン確認**：
    - `npx vercel whoami` を実行してログイン状態を確認する
@@ -77,6 +83,9 @@ description: アプリを公開する。フェーズ1はVercelプレビューURL
    このURLを上長・チーム・クライアントに共有してフィードバックをもらいましょう。
    ※ これはあなた個人のVercelアカウントのプレビュー版です。
    ※ 本番公開はエンジニアが確認・整備してから行います。
+
+   💡 デモがある程度固まったら、エンジニアにレビュー依頼を出すと本番公開に進めます。
+      「準備できました」とエンジニアに伝えてください。
    ```
 
 ---

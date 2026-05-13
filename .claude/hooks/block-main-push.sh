@@ -20,7 +20,7 @@ fi
 case "$CMD" in
   *"git push"*)
     case "$CMD" in
-      *" main"*|*":main"*|*" master"*|*":master"*|*"--force"*|*" -f "*|*" -f"|*"-f "*)
+      *" main"|*" main "*|*":main"|*":main "*|*" master"|*" master "*|*":master"|*":master "*|*"--force"*|*" -f "*|*" -f")
         cat >&2 <<'EOF'
 🚫 mainブランチへの直接プッシュは禁止されています。
 

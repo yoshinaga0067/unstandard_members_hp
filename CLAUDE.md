@@ -164,6 +164,9 @@
 
 ## デザインガイドライン
 
+- **詳細は `docs/DESIGN.md` を参照すること。** プロジェクト開始時に HARMONY / UNSTANDARD / カスタム のいずれかを `/start` で確認すること。テーマは `PROJECT-OVERVIEW.md` の「Design Theme」行に記録される。
+- 日本語コピーの書き方は `docs/CONTENT.md` を参照
+- 写真・画像の取り扱いは `docs/ASSETS.md` を参照
 - プロフェッショナルな住宅会社にふさわしい、モダンでクリーンなデザインを使用すること
 - デフォルトフォント：日本語には "Noto Sans JP"、英語にはシステムのサンセリフ
 - 適切な日本語タイポグラフィを確保すること（本文の line-height: 1.8）

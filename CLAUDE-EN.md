@@ -166,6 +166,9 @@ Set up Supabase yourself whenever the demo needs data or auth:
 
 ## Design guidelines
 
+- **See `docs/DESIGN-EN.md` for the full guide.** At project start, `/start` confirms the theme (HARMONY / UNSTANDARD / Custom). The chosen theme is recorded in `PROJECT-OVERVIEW.md` under "Design Theme."
+- Japanese copy conventions: see `docs/CONTENT-EN.md`
+- Image and asset handling: see `docs/ASSETS-EN.md`
 - Use modern, clean design appropriate for a professional housing company
 - Default fonts: "Noto Sans JP" for Japanese, system sans-serif for English
 - Ensure proper Japanese typography (line-height: 1.8 for body text)
