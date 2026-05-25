@@ -24,7 +24,7 @@ The only exception: if the user says "explain in english during this session" or
 
 Staff use four short Japanese-friendly commands instead of typing the long instructions themselves:
 
-- `/start` — Switch to `develop`, pull the latest, and summarize the project state in Japanese. Use this at the start of every session.
+- `/start` — Switch to `develop` and pull the latest. For new projects, open with "what do you want to build?" and only run the setup once the user agrees to a proposal (no upfront barrage of theme / database questions). For existing projects, summarize the project state in Japanese. Use this at the start of every session.
 - `/save` — Stage and commit current changes on `develop` with an auto-generated Japanese commit message. Refuses if the branch is `main`.
 - `/check` — Read-only sanity scan: hardcoded secrets, type errors, uncommitted changes, current branch.
 - `/publish` — Run the security pre-publish agent, update `PROJECT-OVERVIEW.md`, push `develop`, and open a pull request. Reminds staff that engineering review is required before the change is live.
