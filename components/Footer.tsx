@@ -8,7 +8,7 @@ export default function Footer() {
       <div className="rainbow-bar h-1.5 w-full" aria-hidden />
       <Container className="flex flex-col gap-8 py-12 md:flex-row md:items-start md:justify-between">
         <div>
-          <p className="text-xl font-extrabold">UNSTANDARD</p>
+          <p className="font-display text-2xl font-extrabold">UNSTANDARD</p>
           <p className="mt-3 max-w-sm text-sm text-black/60">
             あなたの「好き」から始める家づくり。全国の加盟店が、あなたの暮らしに合わせた住まいをご提案します。
           </p>

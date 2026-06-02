@@ -3,12 +3,7 @@ import { PRODUCTS } from "@/lib/products";
 
 export default function LineupSection() {
   return (
-    <Carousel
-      en="LINE UP"
-      ja="商品ラインナップ"
-      total={PRODUCTS.length}
-      accent="#ed1c24"
-    >
+    <Carousel en="LINE UP" ja="商品ラインナップ" total={PRODUCTS.length}>
       {PRODUCTS.map((p, i) => (
         <a
           key={i}

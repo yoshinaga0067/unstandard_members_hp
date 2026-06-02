@@ -14,7 +14,7 @@ export default function ContactSection({ tenant }: { tenant: Tenant }) {
           </p>
           <a
             href={`tel:${tenant.tel.replace(/-/g, "")}`}
-            className="mt-6 inline-block text-3xl font-extrabold tracking-wide md:text-4xl"
+            className="mt-6 inline-block font-display text-4xl font-extrabold tracking-wide md:text-5xl"
           >
             {tenant.tel}
           </a>

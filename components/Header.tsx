@@ -11,7 +11,9 @@ export default function Header() {
     <header className="sticky top-0 z-50 border-b border-black/10 bg-white/90 backdrop-blur">
       <Container className="flex h-16 items-center justify-between gap-4">
         <Link href="/" className="flex items-center gap-2">
-          <span className="text-xl font-extrabold tracking-tight">UNSTANDARD</span>
+          <span className="font-display text-2xl font-extrabold tracking-tight">
+            UNSTANDARD
+          </span>
           <span className="h-2.5 w-2.5 rounded-full bg-unstandard" aria-hidden />
         </Link>
 

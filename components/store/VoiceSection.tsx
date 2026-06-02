@@ -6,16 +6,11 @@ export default function VoiceSection() {
   return (
     <section className="bg-neutral-900 py-16 text-white md:py-24">
       <Container>
-        <div className="mb-9 flex items-center gap-3">
-          <span className="h-7 w-1.5 rounded-full bg-unstandard" aria-hidden />
-          <div className="flex items-end gap-3">
-            <h2 className="text-3xl font-extrabold tracking-wide md:text-4xl">
-              VOICE
-            </h2>
-            <span className="pb-1 text-sm font-bold text-white/50">
-              お客様の声
-            </span>
-          </div>
+        <div className="mb-9 flex items-end gap-3">
+          <h2 className="font-display text-4xl font-extrabold uppercase leading-none tracking-tight md:text-5xl">
+            VOICE
+          </h2>
+          <span className="pb-1 text-sm font-bold text-white/50">お客様の声</span>
         </div>
         <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
           {VOICES.map((v, i) => (

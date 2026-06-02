@@ -25,7 +25,7 @@ export default function HomePage() {
           aria-hidden
         />
         <Container className="relative py-16 md:py-28">
-          <p className="mb-4 text-sm font-bold tracking-widest text-black/50">
+          <p className="mb-4 font-display text-sm font-bold tracking-widest text-black/50">
             LIFE IS COLORFUL
           </p>
           <h1 className="text-3xl font-extrabold leading-tight md:text-5xl">

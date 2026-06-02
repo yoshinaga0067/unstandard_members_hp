@@ -51,7 +51,7 @@ export default function StoreFooter({ tenant }: { tenant: Tenant }) {
           <p className="text-xs tracking-widest text-white/50">
             住宅フランチャイズ
           </p>
-          <Link href="/" className="text-2xl font-extrabold">
+          <Link href="/" className="font-display text-3xl font-extrabold">
             UNSTANDARD
           </Link>
           <p className="mt-6 text-xs text-white/40">

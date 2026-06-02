@@ -29,6 +29,7 @@ const config: Config = {
       },
       fontFamily: {
         sans: ["var(--font-noto)", "system-ui", "sans-serif"],
+        display: ["var(--font-display)", "var(--font-noto)", "sans-serif"],
       },
       maxWidth: {
         content: "1200px",

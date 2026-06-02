@@ -7,13 +7,7 @@ export default function EventSection({ tenant }: { tenant: Tenant }) {
   if (events.length === 0) return null;
 
   return (
-    <Carousel
-      en="EVENT"
-      ja="イベント情報"
-      total={events.length}
-      bg="bg-[#f5f4f1]"
-      accent="#91c2e1"
-    >
+    <Carousel en="EVENT" ja="イベント情報" total={events.length} bg="bg-[#f5f4f1]">
       {events.map((ev) => (
         <a
           key={ev.id}

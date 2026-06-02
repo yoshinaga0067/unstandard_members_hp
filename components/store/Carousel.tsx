@@ -9,7 +9,6 @@ export default function Carousel({
   ja,
   total,
   bg = "",
-  accent = "#e9d45a",
   children,
 }: {
   en: string;
@@ -17,8 +16,6 @@ export default function Carousel({
   total: number;
   /** セクション背景色（ブロックごとに変える） */
   bg?: string;
-  /** 見出しの差し色（セクションごとに虹色） */
-  accent?: string;
   children: ReactNode;
 }) {
   const ref = useRef<HTMLDivElement>(null);
@@ -45,18 +42,11 @@ export default function Carousel({
     <section className={`py-16 md:py-24 ${bg}`}>
       <Container>
         <div className="mb-9 flex items-end justify-between">
-          <div className="flex items-center gap-3">
-            <span
-              className="h-7 w-1.5 rounded-full"
-              style={{ backgroundColor: accent }}
-              aria-hidden
-            />
-            <div className="flex items-end gap-3">
-              <h2 className="text-3xl font-extrabold tracking-wide md:text-4xl">
-                {en}
-              </h2>
-              <span className="pb-1 text-sm font-bold text-black/50">{ja}</span>
-            </div>
+          <div className="flex items-end gap-3">
+            <h2 className="font-display text-4xl font-extrabold uppercase leading-none tracking-tight md:text-5xl">
+              {en}
+            </h2>
+            <span className="pb-1 text-sm font-bold text-black/50">{ja}</span>
           </div>
           <span className="text-sm tabular-nums text-black/40">
             {page} / {total}

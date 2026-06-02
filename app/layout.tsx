@@ -1,11 +1,19 @@
 import type { Metadata } from "next";
-import { Noto_Sans_JP } from "next/font/google";
+import { Noto_Sans_JP, Montserrat } from "next/font/google";
 import "./globals.css";
 
 const noto = Noto_Sans_JP({
   subsets: ["latin"],
   weight: ["400", "500", "700", "800"],
   variable: "--font-noto",
+  display: "swap",
+});
+
+// English display font for headings / logos (editorial, bold geometric)
+const montserrat = Montserrat({
+  subsets: ["latin"],
+  weight: ["700", "800", "900"],
+  variable: "--font-display",
   display: "swap",
 });
 
@@ -24,7 +32,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="ja" className={noto.variable}>
+    <html lang="ja" className={`${noto.variable} ${montserrat.variable}`}>
       <body className="overflow-x-clip font-sans">{children}</body>
     </html>
   );
