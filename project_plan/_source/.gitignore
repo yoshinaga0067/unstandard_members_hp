@@ -1,0 +1,5 @@
+# WordPressエクスポート（WXR/XML）やACF JSONはサイトの全文データを含むため、
+# Gitにはコミットしない。このフォルダにファイルを置いても追跡されない。
+*
+!.gitignore
+!README.md

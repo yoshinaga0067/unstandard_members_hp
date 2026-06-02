@@ -50,13 +50,9 @@
       "Bash(npx shadcn:*)",
       "Bash(gh pr create:*)",
       "Bash(gh pr view:*)",
-      "Bash(gh pr list:*)"
-    ],
-    "ask": [
-      "Bash(npx:*)",
-      "Bash(wget:*)",
-      "WebFetch",
-      "WebSearch"
+      "Bash(gh pr list:*)",
+      "Bash(curl -s --retry 15 --retry-delay 1 --retry-all-errors --retry-connrefused http://localhost:3000/ -o /tmp/home.html -w \"HTTP %{http_code}\\\\n\" 2>&1; echo \"--- トップページ 主要テキスト ---\"; grep -oE \"\\(LIFE IS COLORFUL|あなたの「好き」から|加盟店を探す|加盟店ピックアップ|エリアから探す\\)\" /tmp/home.html | sort -u; echo \"--- 加盟店一覧 ---\"; curl -s http://localhost:3000/stores -o /tmp/stores2.html -w \"HTTP %{http_code}\\\\n\"; grep -oE \"\\(北海道・東北|関東|九州・沖縄|ハウジング福島センター|名和建築\\)\" /tmp/stores2.html | sort -u; echo \"--- 加盟店詳細\\(名和建築\\) ---\"; curl -s http://localhost:3000/stores/nawa-kenchiku -o /tmp/t.html -w \"HTTP %{http_code}\\\\n\"; grep -oE \"\\(株式会社名和建築|施工事例|準備中|移行前の専用サイト\\)\" /tmp/t.html | sort -u)",
+      "Read(//tmp/**)"
     ],
     "deny": [
       "Bash(rm -rf:*)",
@@ -77,6 +73,12 @@
       "Write(./.env)",
       "Write(./.env.local)",
       "Write(./.env.production)"
+    ],
+    "ask": [
+      "Bash(npx:*)",
+      "Bash(wget:*)",
+      "WebFetch",
+      "WebSearch"
     ]
   },
   "hooks": {
@@ -84,14 +86,23 @@
       {
         "matcher": "Bash",
         "hooks": [
-          { "type": "command", "command": "./.claude/hooks/block-main-push.sh" }
+          {
+            "type": "command",
+            "command": "./.claude/hooks/block-main-push.sh"
+          }
         ]
       },
       {
         "matcher": "Write|Edit",
         "hooks": [
-          { "type": "command", "command": "./.claude/hooks/scan-secrets.sh" },
-          { "type": "command", "command": "./.claude/hooks/protect-foundation.sh" }
+          {
+            "type": "command",
+            "command": "./.claude/hooks/scan-secrets.sh"
+          },
+          {
+            "type": "command",
+            "command": "./.claude/hooks/protect-foundation.sh"
+          }
         ]
       }
     ]
