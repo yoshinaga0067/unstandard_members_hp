@@ -7,7 +7,7 @@ export default function TenantCard({ tenant }: { tenant: Tenant }) {
   return (
     <Link
       href={`/stores/${tenant.slug}`}
-      className="group block overflow-hidden rounded-2xl border border-black/10 transition hover:-translate-y-1 hover:shadow-lg"
+      className="group block overflow-hidden rounded-2xl border border-black/10 transition hover:-translate-y-1"
     >
       {/* Colored band stands in for the store photo until real images are migrated */}
       <div
@@ -19,7 +19,7 @@ export default function TenantCard({ tenant }: { tenant: Tenant }) {
         </span>
       </div>
       <div className="p-4">
-        <p className="text-sm font-bold leading-snug group-hover:text-rainbow-red md:text-base">
+        <p className="text-sm font-bold leading-snug transition-colors group-hover:text-black/55 md:text-base">
           {tenant.shortName}
         </p>
         <p className="mt-1 line-clamp-1 text-xs text-black/50">

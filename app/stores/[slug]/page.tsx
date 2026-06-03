@@ -38,8 +38,8 @@ export default async function TenantPage({
 
   return (
     <StoreShell tenant={tenant}>
-      <StoreHero />
-      <LineupSection />
+      <StoreHero tenant={tenant} />
+      <LineupSection slug={tenant.slug} />
       <EventSection tenant={tenant} />
       <WorksSection tenant={tenant} />
       <VoiceSection />

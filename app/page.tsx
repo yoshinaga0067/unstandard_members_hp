@@ -90,7 +90,7 @@ export default function HomePage() {
             </div>
             <Link
               href="/stores"
-              className="hidden text-sm font-bold transition hover:text-rainbow-red md:inline"
+              className="hidden text-sm font-bold transition hover:text-black/55 md:inline"
             >
               すべて見る →
             </Link>

@@ -1,8 +1,17 @@
 import type { Work } from "@/types";
 
-export default function WorkCard({ work }: { work: Work }) {
-  return (
-    <div className="group flex h-full flex-col overflow-hidden rounded-xl border border-black/10">
+export default function WorkCard({
+  work,
+  href,
+}: {
+  work: Work;
+  href?: string;
+}) {
+  const cls =
+    "group flex h-full flex-col overflow-hidden rounded-xl border border-black transition duration-200 hover:-translate-y-1";
+
+  const inner = (
+    <>
       <div className="relative aspect-square overflow-hidden bg-black/5">
         {/* Image is still hosted on the legacy WordPress site; re-host on migration. */}
         {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -14,7 +23,7 @@ export default function WorkCard({ work }: { work: Work }) {
         />
       </div>
       <div className="flex flex-1 flex-col p-3">
-        <p className="line-clamp-2 min-h-[2.75em] text-sm font-bold leading-snug">
+        <p className="line-clamp-2 min-h-[2.75em] text-sm font-bold leading-snug transition-colors group-hover:text-black/55">
           {work.title}
         </p>
         <div className="mt-2 flex min-h-[1.5rem] flex-wrap gap-1">
@@ -28,6 +37,15 @@ export default function WorkCard({ work }: { work: Work }) {
           ))}
         </div>
       </div>
-    </div>
+    </>
   );
+
+  if (href) {
+    return (
+      <a href={href} target="_blank" rel="noopener noreferrer" className={cls}>
+        {inner}
+      </a>
+    );
+  }
+  return <div className={cls}>{inner}</div>;
 }

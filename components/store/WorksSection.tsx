@@ -8,10 +8,18 @@ export default function WorksSection({ tenant }: { tenant: Tenant }) {
   if (works.length === 0) return null;
 
   return (
-    <Carousel en="WORKS" ja="施工事例" total={works.length}>
+    <Carousel
+      en="WORKS"
+      ja="施工事例"
+      total={works.length}
+      moreHref={`/stores/${tenant.slug}/works`}
+    >
       {works.map((work) => (
         <div key={work.id} className="w-52 shrink-0 snap-start sm:w-56">
-          <WorkCard work={work} />
+          <WorkCard
+            work={work}
+            href={`https://unstandard-members.com/${tenant.slug}/works/${work.id}/`}
+          />
         </div>
       ))}
     </Carousel>

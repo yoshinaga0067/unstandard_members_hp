@@ -1,0 +1,66 @@
+import type { Metadata } from "next";
+import { notFound } from "next/navigation";
+import Link from "next/link";
+import Container from "@/components/Container";
+import StoreShell from "@/components/store/StoreShell";
+import WorkCard from "@/components/WorkCard";
+import { TENANTS, getTenant } from "@/lib/tenants";
+import { worksForTenant } from "@/lib/works";
+
+export function generateStaticParams() {
+  return TENANTS.map((t) => ({ slug: t.slug }));
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
+  const { slug } = await params;
+  const tenant = getTenant(slug);
+  if (!tenant) return { title: "施工事例" };
+  return { title: `施工事例｜${tenant.shortName}` };
+}
+
+export default async function WorksPage({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}) {
+  const { slug } = await params;
+  const tenant = getTenant(slug);
+  if (!tenant) notFound();
+  const works = worksForTenant(tenant.slug);
+
+  return (
+    <StoreShell tenant={tenant}>
+      <section className="py-12 md:py-16">
+        <Container>
+          <div className="mb-10 flex items-end gap-3">
+            <h1 className="font-display text-4xl font-extrabold uppercase leading-none tracking-tight md:text-5xl">
+              WORKS
+            </h1>
+            <span className="pb-1 text-sm font-bold text-black/50">施工事例</span>
+          </div>
+          <div className="grid grid-cols-2 gap-5 sm:grid-cols-3 lg:grid-cols-4">
+            {works.map((work) => (
+              <WorkCard
+                key={work.id}
+                work={work}
+                href={`https://unstandard-members.com/${tenant.slug}/works/${work.id}/`}
+              />
+            ))}
+          </div>
+          <div className="mt-14 flex justify-center">
+            <Link
+              href={`/stores/${tenant.slug}`}
+              className="inline-flex items-center gap-2 rounded-full border border-black px-7 py-3 text-sm font-bold transition hover:bg-black hover:text-white"
+            >
+              ← トップへ
+            </Link>
+          </div>
+        </Container>
+      </section>
+    </StoreShell>
+  );
+}
