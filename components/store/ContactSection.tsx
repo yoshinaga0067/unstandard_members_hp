@@ -4,7 +4,7 @@ import type { Tenant } from "@/types";
 
 export default function ContactSection({ tenant }: { tenant: Tenant }) {
   return (
-    <section id="contact" className="py-14 md:py-20">
+    <section id="contact" className="scroll-mt-28 py-14 md:py-20">
       <Container>
         <SectionHeading en="CONTACT" ja="お問い合わせ・来店予約" />
         <div className="rounded-3xl bg-unstandard p-8 text-center md:p-14">

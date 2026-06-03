@@ -23,6 +23,10 @@ export default function Carousel({
   total,
   panel = false,
   moreHref,
+  autoScroll = "continuous",
+  speed = 0.05,
+  id,
+  bg = "",
   children,
 }: {
   en: string;
@@ -30,11 +34,20 @@ export default function Carousel({
   total: number;
   panel?: boolean;
   moreHref?: string;
+  /** 自動スクロールの動き方 */
+  autoScroll?: "continuous" | "step";
+  /** continuous のスピード（px/ms） */
+  speed?: number;
+  /** アンカー用ID */
+  id?: string;
+  /** 非パネル時のセクション背景色 */
+  bg?: string;
   children: ReactNode;
 }) {
   const ref = useRef<HTMLDivElement>(null);
   const wrapTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const rootRef = useRef<HTMLElement | null>(null);
+  const pauseRef = useRef(0); // auto-scroll paused until this timestamp
   const [page, setPage] = useState(1);
   const [inView, setInView] = useState(false);
 
@@ -66,12 +79,12 @@ export default function Carousel({
       el as ReactElement<{ className?: string; style?: CSSProperties }>,
       {
         key,
-        className: `${p.className ?? ""} transition-all duration-500 ease-out motion-reduce:!translate-x-0 motion-reduce:!opacity-100 ${
-          inView ? "translate-x-0 opacity-100" : "-translate-x-6 opacity-0"
+        className: `${p.className ?? ""} transition-all duration-700 ease-out motion-reduce:!translate-x-0 motion-reduce:!opacity-100 ${
+          inView ? "translate-x-0 opacity-100" : "-translate-x-20 opacity-0"
         }`,
         style: {
           ...(p.style ?? {}),
-          transitionDelay: `${Math.min(idx, 12) * 60}ms`,
+          transitionDelay: `${Math.min(idx, 12) * 90}ms`,
         },
       },
     );
@@ -91,6 +104,79 @@ export default function Carousel({
     const el = ref.current;
     if (el) el.scrollLeft = el.scrollWidth / 3;
   }, [loop]);
+
+  // auto-scroll (right → left); pauses on hover / interaction
+  useEffect(() => {
+    if (!loop || !inView) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const el = ref.current;
+    if (!el) return;
+
+    let hovering = false;
+    pauseRef.current = performance.now() + 1200; // let the reveal finish first
+    const bump = () => {
+      pauseRef.current = performance.now() + 2500;
+    };
+    const enter = () => {
+      hovering = true;
+    };
+    const leave = () => {
+      hovering = false;
+    };
+    el.addEventListener("pointerenter", enter);
+    el.addEventListener("pointerleave", leave);
+    el.addEventListener("pointerdown", bump);
+    el.addEventListener("wheel", bump, { passive: true });
+    el.addEventListener("touchstart", bump, { passive: true });
+
+    let raf = 0;
+    let timer: ReturnType<typeof setInterval> | undefined;
+    let last = 0;
+
+    if (autoScroll === "step") {
+      // advance one card, pause, repeat ("ひゅっと動いて止まる")
+      const advance = () => {
+        if (hovering || performance.now() < pauseRef.current) return;
+        const first = el.children[0] as HTMLElement | undefined;
+        const stepPx = first
+          ? first.getBoundingClientRect().width + 24
+          : el.clientWidth * 0.6;
+        el.scrollBy({ left: stepPx, behavior: "smooth" });
+      };
+      timer = setInterval(advance, 2400);
+    } else {
+      // smooth continuous drift. Accumulate in a float so slow speeds aren't
+      // swallowed by the browser rounding scrollLeft to whole pixels.
+      let pos = el.scrollLeft;
+      let wasActive = false;
+      const frame = (now: number) => {
+        if (!last) last = now;
+        const dt = Math.min(now - last, 50);
+        last = now;
+        const active = !hovering && now >= pauseRef.current;
+        if (active) {
+          if (!wasActive) pos = el.scrollLeft; // resync after a pause / manual scroll
+          pos += speed * dt;
+          const third = el.scrollWidth / 3;
+          if (pos >= third * 1.5) pos -= third;
+          el.scrollLeft = pos;
+        }
+        wasActive = active;
+        raf = requestAnimationFrame(frame);
+      };
+      raf = requestAnimationFrame(frame);
+    }
+
+    return () => {
+      cancelAnimationFrame(raf);
+      if (timer) clearInterval(timer);
+      el.removeEventListener("pointerenter", enter);
+      el.removeEventListener("pointerleave", leave);
+      el.removeEventListener("pointerdown", bump);
+      el.removeEventListener("wheel", bump);
+      el.removeEventListener("touchstart", bump);
+    };
+  }, [loop, inView, autoScroll, speed]);
 
   const update = () => {
     const el = ref.current;
@@ -118,6 +204,7 @@ export default function Carousel({
   const scroll = (dir: number) => {
     const el = ref.current;
     if (!el) return;
+    pauseRef.current = performance.now() + 2500; // pause auto-scroll so the click isn't overridden
     el.scrollBy({ left: dir * el.clientWidth * 0.85, behavior: "smooth" });
   };
 
@@ -169,7 +256,7 @@ export default function Carousel({
     <div
       ref={ref}
       onScroll={update}
-      className="flex snap-x gap-6 overflow-x-auto px-1 py-4 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+      className="flex gap-6 overflow-x-auto px-1 py-4 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
     >
       {rendered}
     </div>
@@ -188,7 +275,11 @@ export default function Carousel({
 
   if (panel) {
     return (
-      <section ref={rootRef} className="bg-neutral-100 py-10 md:py-14">
+      <section
+        ref={rootRef}
+        id={id}
+        className="scroll-mt-28 bg-neutral-100 py-10 md:py-14"
+      >
         <Container>
           <div className="relative rounded-3xl border border-black bg-white p-5 md:p-10">
             {heading}
@@ -209,7 +300,11 @@ export default function Carousel({
   }
 
   return (
-    <section ref={rootRef} className="py-12 md:py-16">
+    <section
+      ref={rootRef}
+      id={id}
+      className={`scroll-mt-28 py-12 md:py-16 ${bg}`}
+    >
       <Container>
         {heading}
         <div className="relative">

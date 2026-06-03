@@ -5,6 +5,8 @@
 @layer base {
   html {
     scroll-behavior: smooth;
+    /* offset anchor jumps so sections aren't hidden behind the sticky header */
+    scroll-padding-top: 7rem;
   }
   body {
     @apply bg-white text-black antialiased;
@@ -17,6 +19,12 @@
   h4 {
     line-height: 1.4;
     font-weight: 700;
+  }
+  /* clear keyboard focus indicator (accessibility) */
+  :focus-visible {
+    outline: 3px solid #e9d45a;
+    outline-offset: 2px;
+    border-radius: 2px;
   }
 }
 
@@ -48,4 +56,11 @@
 }
 .animate-marquee {
   animation: marquee 28s linear infinite;
+}
+
+/* marching-ants dashed border (used on MEDIA cards on hover) */
+@keyframes dash-march {
+  to {
+    stroke-dashoffset: -22;
+  }
 }

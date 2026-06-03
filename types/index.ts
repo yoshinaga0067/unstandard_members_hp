@@ -86,6 +86,14 @@ export interface EventItem {
   tags: string[];
 }
 
+/** メディア記事（MEDIA）。本部 unstandard.jp の共有メディア。 */
+export interface MediaItem {
+  url: string;
+  image: string;
+  date: string;
+  title: string;
+}
+
 /** 施工事例（WORKS）。本部事例は全加盟店で共有表示される。 */
 export interface Work {
   /** 旧サイトの投稿ID */

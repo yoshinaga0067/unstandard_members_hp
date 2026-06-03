@@ -9,12 +9,14 @@ export default function LineupSection({ slug }: { slug: string }) {
       ja="商品ラインナップ"
       total={PRODUCTS.length}
       panel
+      autoScroll="step"
+      id="lineup"
       moreHref={`/stores/${slug}/products`}
     >
       {PRODUCTS.map((p, i) => (
         <div
           key={i}
-          className="w-80 shrink-0 snap-start sm:w-96 md:w-[28rem]"
+          className="w-80 shrink-0 sm:w-96 md:w-[28rem]"
         >
           <ProductCard product={p} />
         </div>

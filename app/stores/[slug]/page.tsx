@@ -7,6 +7,7 @@ import LineupSection from "@/components/store/LineupSection";
 import EventSection from "@/components/store/EventSection";
 import WorksSection from "@/components/store/WorksSection";
 import VoiceSection from "@/components/store/VoiceSection";
+import MediaSection from "@/components/store/MediaSection";
 import ContactSection from "@/components/store/ContactSection";
 
 export function generateStaticParams() {
@@ -43,6 +44,7 @@ export default async function TenantPage({
       <EventSection tenant={tenant} />
       <WorksSection tenant={tenant} />
       <VoiceSection />
+      <MediaSection />
       <ContactSection tenant={tenant} />
     </StoreShell>
   );
