@@ -23,7 +23,7 @@ export default function EventSection({ tenant }: { tenant: Tenant }) {
             href={`/stores/${tenant.slug}/events`}
             className="inline-flex items-center gap-2 rounded-full border border-black px-7 py-3 text-sm font-bold transition hover:bg-black hover:text-white"
           >
-            一覧を見る<span aria-hidden>→</span>
+            イベント一覧を見る<span aria-hidden>→</span>
           </Link>
         </div>
       </Container>

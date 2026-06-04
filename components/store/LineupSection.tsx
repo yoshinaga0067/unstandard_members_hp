@@ -12,6 +12,7 @@ export default function LineupSection({ slug }: { slug: string }) {
       autoScroll="step"
       id="lineup"
       moreHref={`/stores/${slug}/products`}
+      moreLabel="商品一覧を見る"
     >
       {PRODUCTS.map((p, i) => (
         <div

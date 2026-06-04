@@ -23,6 +23,7 @@ export default function Carousel({
   total,
   panel = false,
   moreHref,
+  moreLabel,
   autoScroll = "continuous",
   speed = 0.05,
   id,
@@ -34,6 +35,8 @@ export default function Carousel({
   total: number;
   panel?: boolean;
   moreHref?: string;
+  /** 「一覧を見る」ボタンの文言（省略時は「{ja}一覧を見る」） */
+  moreLabel?: string;
   /** 自動スクロールの動き方 */
   autoScroll?: "continuous" | "step";
   /** continuous のスピード（px/ms） */
@@ -268,7 +271,7 @@ export default function Carousel({
         href={moreHref}
         className="inline-flex items-center gap-2 rounded-full border border-black px-7 py-3 text-sm font-bold transition hover:bg-black hover:text-white"
       >
-        一覧を見る<span aria-hidden>→</span>
+{moreLabel ?? `${ja}一覧を見る`}<span aria-hidden>→</span>
       </Link>
     </div>
   ) : null;

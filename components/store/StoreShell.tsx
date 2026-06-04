@@ -2,6 +2,7 @@ import type { ReactNode } from "react";
 import Marquee from "./Marquee";
 import StoreHeader from "./StoreHeader";
 import StoreFooter from "./StoreFooter";
+import PageTop from "./PageTop";
 import type { Tenant } from "@/types";
 
 export default function StoreShell({
@@ -17,6 +18,7 @@ export default function StoreShell({
       <Marquee />
       <main className="flex-1 bg-white">{children}</main>
       <StoreFooter tenant={tenant} />
+      <PageTop />
     </div>
   );
 }

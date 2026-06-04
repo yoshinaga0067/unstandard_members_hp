@@ -55,7 +55,7 @@
   }
 }
 .animate-marquee {
-  animation: marquee 60s linear infinite;
+  animation: marquee 140s linear infinite;
 }
 
 /* marching-ants dashed border (used on MEDIA cards on hover) */
