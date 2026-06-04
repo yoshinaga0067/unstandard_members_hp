@@ -9,6 +9,10 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@blocknote/ariakit": "^0.51.4",
+    "@blocknote/core": "^0.51.4",
+    "@blocknote/mantine": "^0.51.4",
+    "@blocknote/react": "^0.51.4",
     "next": "^15.1.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
