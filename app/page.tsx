@@ -11,19 +11,6 @@ export default function HomePage() {
     <BrandShell>
       {/* Hero */}
       <section className="relative overflow-hidden">
-        {/* decorative dots (desktop only) */}
-        <span
-          className="pointer-events-none absolute -right-6 top-10 hidden h-24 w-24 rounded-full bg-rainbow-lime/70 md:block"
-          aria-hidden
-        />
-        <span
-          className="pointer-events-none absolute right-32 top-40 hidden h-12 w-12 rounded-full bg-rainbow-coral/70 md:block"
-          aria-hidden
-        />
-        <span
-          className="pointer-events-none absolute right-10 bottom-8 hidden h-16 w-16 rounded-full bg-rainbow-sky/70 md:block"
-          aria-hidden
-        />
         <Container className="relative py-16 md:py-28">
           <p className="mb-4 font-display text-sm font-bold tracking-widest text-black/50">
             LIFE IS COLORFUL
@@ -66,9 +53,13 @@ export default function HomePage() {
               <Link
                 key={a.key}
                 href={`/stores#${a.key}`}
-                className="rounded-full px-5 py-2 text-sm font-bold text-black transition hover:opacity-80"
-                style={{ backgroundColor: a.color }}
+                className="flex items-center gap-2 rounded-full border border-black bg-white px-5 py-2 text-sm font-bold transition hover:bg-black hover:text-white"
               >
+                <span
+                  className="h-2.5 w-2.5 shrink-0 rounded-full"
+                  style={{ backgroundColor: a.color }}
+                  aria-hidden
+                />
                 {a.name}（{tenantsByArea(a.key).length}）
               </Link>
             ))}

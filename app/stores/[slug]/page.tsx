@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { TENANTS, getTenant } from "@/lib/tenants";
 import StoreShell from "@/components/store/StoreShell";
 import StoreHero from "@/components/store/StoreHero";
+import NewsSection from "@/components/store/NewsSection";
 import LineupSection from "@/components/store/LineupSection";
 import EventSection from "@/components/store/EventSection";
 import WorksSection from "@/components/store/WorksSection";
@@ -40,6 +41,7 @@ export default async function TenantPage({
   return (
     <StoreShell tenant={tenant}>
       <StoreHero tenant={tenant} />
+      <NewsSection slug={tenant.slug} />
       <LineupSection slug={tenant.slug} />
       <EventSection tenant={tenant} />
       <WorksSection tenant={tenant} />

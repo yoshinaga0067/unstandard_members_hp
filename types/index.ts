@@ -77,6 +77,20 @@ export interface Voice {
   text: string;
 }
 
+/** お知らせ（NEWS）。ヒーロー直下に小さく表示する更新情報。 */
+export interface NewsItem {
+  /** 表示用の日付（例：2026.05.28） */
+  date: string;
+  /** 種別タグ（お知らせ・イベント・施工事例 等） */
+  tag: string;
+  /** 見出し */
+  title: string;
+  /** 先頭に表示する正方形サムネイル画像（任意） */
+  image?: string;
+  /** リンク先（任意） */
+  href?: string;
+}
+
 /** イベント（EVENT）。 */
 export interface EventItem {
   id: number;

@@ -1,20 +1,36 @@
 import Link from "next/link";
 import type { Tenant } from "@/types";
 import { getArea } from "@/lib/tenants";
+import { worksForTenant } from "@/lib/works";
 
 export default function TenantCard({ tenant }: { tenant: Tenant }) {
   const area = getArea(tenant.area);
+  // pick a representative photo; vary by slug so cards don't all repeat
+  const works = worksForTenant(tenant.slug);
+  const idx = works.length
+    ? [...tenant.slug].reduce((a, c) => a + c.charCodeAt(0), 0) % works.length
+    : 0;
+  const photo = works[idx]?.image;
+
   return (
     <Link
       href={`/stores/${tenant.slug}`}
-      className="group block overflow-hidden rounded-2xl border border-black/10 transition hover:-translate-y-1"
+      className="group block overflow-hidden rounded-2xl border border-black/10 transition duration-200 hover:-translate-y-1"
     >
-      {/* Colored band stands in for the store photo until real images are migrated */}
       <div
-        className="flex h-24 items-end p-3"
-        style={{ backgroundColor: area.color }}
+        className="relative aspect-[4/3] overflow-hidden bg-black/5"
+        style={photo ? undefined : { backgroundColor: area.color }}
       >
-        <span className="rounded-full bg-white/90 px-2.5 py-1 text-[11px] font-bold">
+        {photo && (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            src={photo}
+            alt={tenant.shortName}
+            loading="lazy"
+            className="h-full w-full object-cover transition duration-300 group-hover:scale-105"
+          />
+        )}
+        <span className="absolute left-3 top-3 rounded-full bg-white/90 px-2.5 py-1 text-[11px] font-bold">
           {area.name}
         </span>
       </div>
@@ -26,9 +42,6 @@ export default function TenantCard({ tenant }: { tenant: Tenant }) {
           {tenant.prefecture}
           {tenant.city}
         </p>
-        <span className="mt-3 inline-block text-sm font-medium text-black/70 transition group-hover:translate-x-1 group-hover:text-black">
-          もっと見る →
-        </span>
       </div>
     </Link>
   );

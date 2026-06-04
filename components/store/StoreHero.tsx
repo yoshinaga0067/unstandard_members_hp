@@ -47,9 +47,6 @@ export default function StoreHero({ tenant }: { tenant: Tenant }) {
 
       {/* catchphrase */}
       <div className="absolute bottom-8 left-5 right-5 text-white md:bottom-12 md:left-10">
-        <p className="mb-2 font-display text-xs font-bold tracking-[0.25em] text-white/80">
-          UNSTANDARD 加盟店
-        </p>
         <h1 className="font-display text-4xl font-extrabold uppercase leading-[1.05] tracking-tight drop-shadow-md md:text-7xl">
           Life is
           <br />
