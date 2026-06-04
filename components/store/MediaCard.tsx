@@ -35,7 +35,7 @@ export default function MediaCard({ m }: { m: MediaItem }) {
           })`,
         }}
       >
-        <div className="absolute inset-0 overflow-hidden rounded-2xl bg-black/5">
+        <div className="absolute inset-0 overflow-hidden rounded-2xl border-2 border-black bg-black/5">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src={m.image}

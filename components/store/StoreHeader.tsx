@@ -11,6 +11,7 @@ const NAV = [
   { href: "#voice", label: "お客様の声" },
   { href: "#media", label: "メディア" },
   { href: "#news", label: "お知らせ" },
+  { href: "#about", label: "私たちについて" },
 ];
 
 export default function StoreHeader({ tenant }: { tenant: Tenant }) {
@@ -35,21 +36,6 @@ export default function StoreHeader({ tenant }: { tenant: Tenant }) {
               {tenant.shortName}
             </span>
           </Link>
-        </div>
-
-        {/* center: playful catchphrase + emoji + speech bubble */}
-        <div className="pointer-events-none absolute left-1/2 hidden -translate-x-1/2 items-center gap-3 xl:flex">
-          <span className="font-display text-2xl font-extrabold uppercase italic tracking-tight">
-            Life is colorful!
-          </span>
-          <span className="text-2xl" aria-hidden>
-            ✌️
-          </span>
-          <span className="rounded-2xl border-2 border-black px-4 py-1.5 text-xs font-bold leading-tight">
-            あなたの「好き」を
-            <br />
-            暮らしのかたちに
-          </span>
         </div>
 
         {/* right: phone + contact pill + menu */}

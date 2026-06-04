@@ -1,5 +1,6 @@
 import Container from "@/components/Container";
 import SectionHeading from "./SectionHeading";
+import PillLink from "./PillLink";
 import MediaCard from "./MediaCard";
 import { MEDIA } from "@/lib/media";
 
@@ -19,14 +20,9 @@ export default function MediaSection() {
         </div>
 
         <div className="mt-10 flex justify-center">
-          <a
-            href="https://unstandard.jp/media/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 rounded-full border border-black px-7 py-3 text-sm font-bold transition hover:bg-black hover:text-white"
-          >
-            メディア一覧を見る<span aria-hidden>→</span>
-          </a>
+          <PillLink href="https://unstandard.jp/media/" external>
+            メディア一覧を見る
+          </PillLink>
         </div>
       </Container>
     </section>

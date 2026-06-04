@@ -15,7 +15,7 @@ export default function ContactSection({ tenant }: { tenant: Tenant }) {
       className="scroll-mt-28 bg-unstandard py-14 md:py-20"
     >
       <Container>
-        <SectionHeading en="CONTACT" ja="お問い合わせ・来店予約" />
+        <SectionHeading en="CONTACT" ja="お問い合わせ・来店予約" center />
 
         {/* one white card on the yellow section: intro + phone + form */}
         <div className="mx-auto max-w-2xl rounded-3xl bg-white p-6 shadow-sm md:p-10">

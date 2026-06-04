@@ -26,6 +26,7 @@ const schema = z
     children: z.string().optional(),
     name: z.string().trim().min(1, "お名前を入力してください"),
     kana: z.string().trim().min(1, "フリガナを入力してください"),
+    postal: z.string().optional(),
     address: z.string().optional(),
     tel: z
       .string()
@@ -85,7 +86,39 @@ export default function ContactForm({
   const [sending, setSending] = useState(false);
   const [done, setDone] = useState(false);
 
+  // postal-code lookup → auto-fills the address field
+  const [postal, setPostal] = useState("");
+  const [address, setAddress] = useState("");
+  const [zipLoading, setZipLoading] = useState(false);
+  const [zipError, setZipError] = useState("");
+
   const isReserve = type === "来店予約" || type === "イベント予約";
+
+  const lookupZip = async () => {
+    const code = postal.replace(/[^0-9]/g, "");
+    if (code.length !== 7) {
+      setZipError("郵便番号は7桁で入力してください");
+      return;
+    }
+    setZipError("");
+    setZipLoading(true);
+    try {
+      const res = await fetch(
+        `https://zipcloud.ibsnet.co.jp/api/search?zipcode=${code}`
+      );
+      const json = await res.json();
+      const r = json?.results?.[0];
+      if (r) {
+        setAddress(`${r.address1}${r.address2}${r.address3}`);
+      } else {
+        setZipError("住所が見つかりませんでした。郵便番号をご確認ください。");
+      }
+    } catch {
+      setZipError("住所の取得に失敗しました。時間をおいてお試しください。");
+    } finally {
+      setZipLoading(false);
+    }
+  };
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -341,6 +374,37 @@ export default function ContactForm({
         </div>
       </div>
 
+      {/* 郵便番号 → 住所自動入力 */}
+      <div>
+        <label htmlFor="postal" className="mb-1.5 block text-sm font-bold">
+          郵便番号
+          <Opt />
+        </label>
+        <div className="flex flex-wrap items-center gap-2">
+          <input
+            id="postal"
+            name="postal"
+            type="text"
+            inputMode="numeric"
+            value={postal}
+            onChange={(e) => setPostal(e.target.value)}
+            placeholder="123-4567"
+            className={`${inputBase} max-w-[12rem]`}
+          />
+          <button
+            type="button"
+            onClick={lookupZip}
+            disabled={zipLoading}
+            className="rounded-full border border-black px-4 py-2.5 text-xs font-bold transition hover:bg-black hover:text-white disabled:opacity-60"
+          >
+            {zipLoading ? "検索中..." : "住所を自動入力"}
+          </button>
+        </div>
+        {zipError && (
+          <p className="mt-1 text-xs font-bold text-rainbow-red">{zipError}</p>
+        )}
+      </div>
+
       {/* ご住所 */}
       <div>
         <label htmlFor="address" className="mb-1.5 block text-sm font-bold">
@@ -351,6 +415,8 @@ export default function ContactForm({
           id="address"
           name="address"
           type="text"
+          value={address}
+          onChange={(e) => setAddress(e.target.value)}
           placeholder="〇〇県〇〇市〇〇町1-2-3"
           className={inputBase}
         />

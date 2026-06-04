@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import Link from "next/link";
+import PillLink from "@/components/store/PillLink";
 import Container from "@/components/Container";
 import StoreShell from "@/components/store/StoreShell";
 import WorkCard from "@/components/WorkCard";
@@ -52,12 +52,9 @@ export default async function WorksPage({
             ))}
           </div>
           <div className="mt-14 flex justify-center">
-            <Link
-              href={`/stores/${tenant.slug}`}
-              className="inline-flex items-center gap-2 rounded-full border border-black px-7 py-3 text-sm font-bold transition hover:bg-black hover:text-white"
-            >
-              ← トップへ
-            </Link>
+            <PillLink href={`/stores/${tenant.slug}`} back>
+              トップへ
+            </PillLink>
           </div>
         </Container>
       </section>

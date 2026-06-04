@@ -1,6 +1,6 @@
-import Link from "next/link";
 import Container from "@/components/Container";
 import SectionHeading from "./SectionHeading";
+import PillLink from "./PillLink";
 import EventCard from "./EventCard";
 import { eventsForTenant } from "@/lib/events";
 import type { Tenant } from "@/types";
@@ -19,12 +19,9 @@ export default function EventSection({ tenant }: { tenant: Tenant }) {
           ))}
         </div>
         <div className="mt-10 flex justify-center">
-          <Link
-            href={`/stores/${tenant.slug}/events`}
-            className="inline-flex items-center gap-2 rounded-full border border-black px-7 py-3 text-sm font-bold transition hover:bg-black hover:text-white"
-          >
-            イベント一覧を見る<span aria-hidden>→</span>
-          </Link>
+          <PillLink href={`/stores/${tenant.slug}/events`}>
+            イベント一覧を見る
+          </PillLink>
         </div>
       </Container>
     </section>

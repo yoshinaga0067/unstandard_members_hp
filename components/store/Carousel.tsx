@@ -11,8 +11,8 @@ import {
   type ReactElement,
   type ReactNode,
 } from "react";
-import Link from "next/link";
 import Container from "@/components/Container";
+import PillLink from "./PillLink";
 
 // Horizontal carousel with heading + pager + side arrows.
 // When there are enough items it loops seamlessly (renders 3 copies and
@@ -267,12 +267,7 @@ export default function Carousel({
 
   const more = moreHref ? (
     <div className="mt-8 flex justify-center">
-      <Link
-        href={moreHref}
-        className="inline-flex items-center gap-2 rounded-full border border-black px-7 py-3 text-sm font-bold transition hover:bg-black hover:text-white"
-      >
-{moreLabel ?? `${ja}一覧を見る`}<span aria-hidden>→</span>
-      </Link>
+      <PillLink href={moreHref}>{moreLabel ?? `${ja}一覧を見る`}</PillLink>
     </div>
   ) : null;
 
