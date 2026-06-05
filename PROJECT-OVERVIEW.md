@@ -23,6 +23,11 @@ data model are derived from a migration analysis of the existing WordPress sites
 - Real store profiles (name, prefecture, city, address, postal code, phone, FAX, SNS links, intro) for all 18 tenants, scraped from each store's public page (structured data + footer)
 - Content scraped from the live store pages: LINE UP products (18 shared), 施工事例/works (18; 15 shared 本部事例 + 3 store-specific), per-store EVENT, お客様の声/VOICE (5 shared)
 - Brand layer: homepage (hero, region finder, store pickup) and store directory grouped by 7 regions
+- "私たちについて" (About) page per store: concept message, strong points cards, company profile table with an embedded Google Map. The store top page also carries an About teaser, a News section, and a Media section.
+- News (お知らせ) per store with a dedicated list page
+- Dedicated list pages for LINE UP (products), EVENT, WORKS and NEWS, in addition to the carousels on the store top page
+- Contact / visit-reservation form with zod validation (client-side), including a participant-count field (adults / children)
+- UI polish: unified black pill buttons with hover-invert motion, a back-to-top button, and a favicon (black circle "U")
 - UNSTANDARD-themed responsive UI (mobile-first), Japanese typography (line-height 1.8)
 - Powered by static seed data scraped from the legacy site; images still hosted on the legacy domain pending re-host. Full DB-backed migration is a later phase.
 
@@ -30,7 +35,13 @@ data model are derived from a migration analysis of the existing WordPress sites
 
 - `/` — Homepage (hero, region finder, store pickup, CTA band)
 - `/stores` — Affiliate store directory grouped by region, with anchor quick-nav
-- `/stores/[slug]` — Full per-store site (18 SSG pages): hero, LINE UP, EVENT, WORKS, VOICE, contact
+- `/stores/[slug]` — Full per-store site (18 SSG pages): hero, About teaser, LINE UP, EVENT, WORKS, VOICE, Media, News, contact
+- `/stores/[slug]/about` — About page (私たちについて): concept, strong points, company profile + Google Map
+- `/stores/[slug]/products` — LINE UP product list
+- `/stores/[slug]/events` — EVENT list
+- `/stores/[slug]/works` — 施工事例 (works) list
+- `/stores/[slug]/news` — お知らせ (news) list
+- `/tasks` — internal demo task tool (localStorage-backed)
 - `404` — Custom not-found page
 
 ## Tech Stack
@@ -59,6 +70,7 @@ data model are derived from a migration analysis of the existing WordPress sites
 
 | Date | Changes |
 |------|---------|
+| 2026-06-05 | Redesigned the store-top "私たちについて" (About) section: large headline with a hand-drawn marker loop on 「好き」, a model-house photo (`public/about-house.png`) with a line-art family illustration (`public/about-family.svg`), and refined body copy. Fixed the reservation form's participant-count labels (大人 / お子様) wrapping onto multiple lines. Earlier in this cycle: added News (お知らせ), contact/visit-reservation forms, About/EVENT/WORKS/NEWS list pages, a back-to-top button, unified black buttons with hover-invert, and a favicon. |
 | 2026-06-02 | Pivoted store pages to faithfully reproduce the current per-store site composition: marquee, store header (tel/contact), hero, LINE UP, EVENT, WORKS, VOICE, contact, store footer. Sections are discrete components (modules) to support optional add-ons later. LINE UP/EVENT/WORKS use a reusable carousel (arrows + pager) matching the current design; LINE UP cards made smaller. Scraped shared LINE UP (18) and VOICE (5), per-store EVENT, and hero banners (`lib/products.ts`, `lib/voices.ts`, `lib/events.ts`, `lib/hero.ts`). Split layout into BrandShell (brand pages) and StoreShell (store sites). |
 | 2026-06-02 | Enriched store profiles with FAX (11/18) and SNS links (14/18), scraped from store-page footers. Detail page contact card now shows TEL / FAX / SNS. |
 | 2026-06-02 | Added 施工事例 (works) photo galleries to store detail pages. Scraped 18 unique works (15 shared 本部事例 + 3 store-specific) with images and tags from the public store pages (`lib/works.ts`). Images use `next/image` from the legacy host pending re-host. |
