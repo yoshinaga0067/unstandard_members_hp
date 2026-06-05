@@ -1,37 +1,62 @@
 import Container from "@/components/Container";
 import PillLink from "./PillLink";
-import { ABOUT_TEAM_IMAGE } from "@/lib/company";
 import type { Tenant } from "@/types";
 
-// Company intro teaser on the store top page — playful blobs + highlighted copy.
+// Company intro teaser on the store top page — left: copy with a hand-drawn loop
+// on 「好き」; right: a model-house photo with a line-art family illustration.
 export default function AboutSection({ tenant }: { tenant: Tenant }) {
   return (
     <section
       id="about"
-      className="relative scroll-mt-28 overflow-hidden bg-[#eef4ea] py-16 md:py-24"
+      className="relative scroll-mt-28 bg-white py-16 md:py-24"
     >
-      {/* decorative gradient blobs */}
-      <div aria-hidden className="pointer-events-none absolute inset-0">
-        <span className="absolute -top-10 right-1/3 h-40 w-72 rounded-full bg-gradient-to-br from-rainbow-lime to-rainbow-green opacity-40 blur-2xl" />
-        <span className="absolute left-[8%] top-1/2 h-56 w-56 -translate-y-1/2 rounded-full bg-gradient-to-br from-rainbow-pink to-rainbow-coral opacity-40 blur-2xl" />
-        <span className="absolute bottom-4 left-[18%] h-64 w-52 rounded-full bg-gradient-to-br from-rainbow-blue to-rainbow-pink opacity-30 blur-2xl" />
-        <span className="absolute right-[44%] top-1/4 h-72 w-12 rotate-12 rounded-full bg-gradient-to-b from-rainbow-cyan to-rainbow-sky opacity-50 blur-xl" />
-      </div>
-
       <Container>
-        <div className="relative grid items-center gap-10 md:grid-cols-2 md:gap-14">
+        <div className="grid items-center gap-10 md:grid-cols-[1fr_1.3fr] md:gap-14">
           {/* left: copy */}
           <div>
-            <h2 className="font-display text-3xl font-extrabold leading-tight tracking-tight md:text-5xl">
-              あなたの「好き」から、
-              <br />
-              家づくりを。
-            </h2>
-            <p className="mt-7 text-base font-bold leading-loose md:text-lg">
-              <span className="bg-unstandard/60 box-decoration-clone px-1 py-0.5 [box-decoration-break:clone]">
-                {tenant.shortName}は、決めすぎないデザインで、あなたらしい住まいを一緒に考えるパートナーです。
-              </span>
+            <p className="font-display text-3xl font-extrabold uppercase leading-none tracking-tight text-neutral-300 md:text-4xl">
+              ABOUT
             </p>
+
+            <h2 className="mt-6 font-display text-4xl font-extrabold leading-tight tracking-tight md:text-5xl lg:text-6xl">
+              <span className="block">あなたの</span>
+              <span className="mt-2 block -ml-[0.5em] md:mt-3">
+                「
+                <span className="relative inline-block">
+                  <span className="relative z-10">好き</span>
+                  {/* hand-drawn marker loop around 好き (brand mustard) */}
+                  <svg
+                    aria-hidden="true"
+                    viewBox="0 0 240 130"
+                    fill="none"
+                    className="pointer-events-none absolute left-1/2 top-1/2 z-0 h-[180%] w-[140%] -translate-x-1/2 -translate-y-1/2 rotate-[-3deg] text-unstandard-light"
+                  >
+                    <path
+                      d="M120 16C70 10 24 30 18 62C12 96 58 116 116 114C178 112 224 86 222 54C220 24 168 10 110 16C96 17 82 20 70 26"
+                      stroke="currentColor"
+                      strokeWidth="7"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
+                </span>
+                」<span className="-ml-[0.5em]">から、</span>
+              </span>
+              <span className="mt-2 block md:mt-3">家づくりを。</span>
+            </h2>
+
+            <div className="mt-8 max-w-md space-y-5 text-[15px] font-medium leading-[2] text-black/80">
+              <p>
+                {tenant.shortName}は、決めすぎないデザインで、
+                <br />
+                あなたらしい住まいを一緒に考えるパートナーです。
+              </p>
+              <p>
+                暮らす人の「好き」や価値観をていねいに伺い、
+                <br />
+                世界にひとつの住まいへと、かたちにしていきます。
+              </p>
+            </div>
 
             {/* Vision pill button */}
             <PillLink href={`/stores/${tenant.slug}/about`} className="mt-10">
@@ -39,13 +64,20 @@ export default function AboutSection({ tenant }: { tenant: Tenant }) {
             </PillLink>
           </div>
 
-          {/* right: team photo */}
-          <div className="overflow-hidden rounded-[2rem] shadow-lg">
+          {/* right: model-house photo + family illustration */}
+          <div className="relative">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              src={ABOUT_TEAM_IMAGE}
-              alt={`${tenant.shortName}のスタッフ`}
-              className="h-72 w-full object-cover md:h-[28rem]"
+              src="/about-house.png"
+              alt={`${tenant.shortName}のモデルハウス`}
+              className="w-full"
+            />
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/about-family.svg"
+              alt=""
+              aria-hidden="true"
+              className="pointer-events-none absolute -bottom-[6%] right-[4%] w-[22%] max-w-[150px]"
             />
           </div>
         </div>

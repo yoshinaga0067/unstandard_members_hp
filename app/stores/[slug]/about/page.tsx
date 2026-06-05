@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import PillLink from "@/components/store/PillLink";
+import SectionHeading from "@/components/store/SectionHeading";
 import Container from "@/components/Container";
 import StoreShell from "@/components/store/StoreShell";
 import { TENANTS, getTenant } from "@/lib/tenants";
@@ -10,6 +11,9 @@ import {
   STRENGTHS,
   companyProfile,
 } from "@/lib/company";
+
+// tab colours for the strength cards (LIFE IS COLORFUL palette)
+const STRENGTH_TAB_COLORS = ["#f6dc30", "#ea5c52", "#8cc63f"];
 
 export function generateStaticParams() {
   return TENANTS.map((t) => ({ slug: t.slug }));
@@ -26,21 +30,6 @@ export async function generateMetadata({
   return { title: `私たちについて｜${tenant.shortName}` };
 }
 
-// Small parenthesised eyebrow label, e.g. ( ABOUT US )
-function Eyebrow({ children, light }: { children: string; light?: boolean }) {
-  return (
-    <span
-      className={`flex items-center gap-2 font-display text-xs font-bold tracking-[0.25em] ${
-        light ? "text-white" : "text-rainbow-red"
-      }`}
-    >
-      <span aria-hidden>(</span>
-      {children}
-      <span aria-hidden>)</span>
-    </span>
-  );
-}
-
 export default async function AboutPage({
   params,
 }: {
@@ -54,50 +43,47 @@ export default async function AboutPage({
   return (
     <StoreShell tenant={tenant}>
       {/* page header */}
-      <section className="pt-12 md:pt-16">
+      <section className="pb-8 pt-12 md:pb-10 md:pt-16">
         <Container>
-          <div className="flex items-end justify-between gap-4">
-            <div>
-              <Eyebrow>ABOUT US</Eyebrow>
-              <h1 className="mt-2 font-display text-3xl font-extrabold tracking-tight md:text-5xl">
-                私たちについて
-              </h1>
-            </div>
-            <p className="hidden text-xs font-bold text-black/40 md:block">
-              TOP　—　私たちについて
-            </p>
+          {/* heading — centred, like the top page's CONTACT section */}
+          <div className="flex flex-col items-center gap-1 text-center">
+            <h1 className="font-display text-4xl font-extrabold uppercase leading-none tracking-tight md:text-5xl">
+              ABOUT
+            </h1>
+            <span className="text-sm font-bold text-black/50">
+              私たちについて
+            </span>
           </div>
         </Container>
       </section>
 
-      {/* full-width team photo */}
-      <section className="mt-8 md:mt-10">
+      {/* team photo — sits above the red band and straddles it */}
+      <section className="relative z-10">
         <Container>
-          <div className="overflow-hidden rounded-3xl">
+          <div className="overflow-hidden rounded-3xl border-2 border-black">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src={ABOUT_TEAM_IMAGE}
               alt={`${tenant.shortName}のスタッフ`}
-              className="h-[42vw] max-h-[460px] w-full object-cover"
+              className="h-64 w-full object-cover md:h-96 lg:h-[460px]"
             />
           </div>
         </Container>
       </section>
 
-      {/* concept message — bold red band */}
-      <section className="mt-12 bg-rainbow-red py-14 text-white md:mt-16 md:py-20">
+      {/* concept message — the red band is pulled up so the photo's bottom half
+          overlaps it (the photo stays on top via z-index). The negative margin and
+          the top padding both equal ~half the image height at each breakpoint. */}
+      <section className="relative -mt-32 bg-rainbow-red pb-14 pt-40 text-center text-white md:-mt-48 md:pb-20 md:pt-60 lg:-mt-[230px] lg:pt-[280px]">
         <Container>
-          <div className="mb-6 flex justify-center md:justify-start">
-            <Eyebrow light>CONCEPT MESSAGE</Eyebrow>
-          </div>
-          <h2 className="font-display text-2xl font-extrabold leading-snug md:text-4xl">
+          <h2 className="font-display text-2xl font-extrabold leading-relaxed md:text-4xl">
             {ABOUT_CONCEPT.heading.map((line, i) => (
               <span key={i} className="block">
                 {line}
               </span>
             ))}
           </h2>
-          <div className="mt-8 max-w-3xl space-y-2 text-sm leading-loose text-white/90 md:text-base">
+          <div className="mx-auto mt-8 max-w-3xl space-y-2 text-sm leading-loose text-white/90 md:text-base">
             {ABOUT_CONCEPT.body.map((line, i) => (
               <p key={i}>{line}</p>
             ))}
@@ -108,32 +94,57 @@ export default async function AboutPage({
       {/* strong points */}
       <section className="py-14 md:py-20">
         <Container>
-          <div className="mb-10">
-            <Eyebrow>STRONG POINTS</Eyebrow>
-            <h2 className="mt-2 font-display text-2xl font-extrabold tracking-tight md:text-4xl">
-              {tenant.shortName}の3つの強み
+          {/* japanese title is the large heading here, english sits small below */}
+          <div className="mb-10 flex flex-col items-center gap-2 text-center">
+            <h2 className="font-display text-2xl font-extrabold tracking-tight md:text-4xl">
+              {tenant.shortName}の強み
             </h2>
+            <span className="font-display text-xs font-bold tracking-[0.25em] text-black/50">
+              STRONG POINTS
+            </span>
           </div>
-          <div className="grid gap-10 md:grid-cols-3 md:gap-8">
-            {STRENGTHS.map((s) => (
-              <div key={s.no} className="text-center md:text-left">
-                <div className="relative mx-auto aspect-square w-48 overflow-hidden rounded-full md:mx-0 md:w-full">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src={s.image}
-                    alt={s.title}
-                    className="h-full w-full object-cover"
-                  />
-                  <span className="absolute left-3 top-3 flex h-9 w-9 items-center justify-center rounded-full bg-rainbow-red font-display text-sm font-extrabold text-white">
-                    {s.no}
-                  </span>
+          <div className="grid gap-6 md:grid-cols-3">
+            {STRENGTHS.map((s, i) => {
+              const tab = STRENGTH_TAB_COLORS[i % STRENGTH_TAB_COLORS.length];
+              return (
+                <div
+                  key={s.no}
+                  className="relative rounded-3xl border border-black bg-white px-5 pb-7 pt-16 text-center"
+                >
+                  {/* coloured tab hanging from the top-centre of the frame */}
+                  <div
+                    className="absolute left-1/2 top-0 flex -translate-x-1/2 items-baseline gap-1.5 rounded-b-2xl border-x border-b border-black px-6 py-2"
+                    style={{ backgroundColor: tab }}
+                  >
+                    <span className="font-display text-[11px] font-bold tracking-widest text-black">
+                      POINT
+                    </span>
+                    <span className="font-display text-xl font-extrabold leading-none text-black">
+                      {s.no}
+                    </span>
+                  </div>
+
+                  {/* image */}
+                  <div className="overflow-hidden rounded-2xl border border-black">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={s.image}
+                      alt={s.title}
+                      loading="lazy"
+                      className="aspect-square w-full object-cover"
+                    />
+                  </div>
+
+                  {/* title */}
+                  <h3 className="mt-6 text-xl font-extrabold">{s.title}</h3>
+
+                  {/* text */}
+                  <p className="mt-4 text-left text-sm leading-relaxed text-black/70">
+                    {s.text}
+                  </p>
                 </div>
-                <h3 className="mt-5 text-lg font-extrabold">{s.title}</h3>
-                <p className="mt-2 text-sm leading-relaxed text-black/70">
-                  {s.text}
-                </p>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </Container>
       </section>
@@ -141,13 +152,7 @@ export default async function AboutPage({
       {/* profile / 会社概要 */}
       <section className="bg-neutral-50 py-14 md:py-20">
         <Container>
-          <div className="mb-8 flex items-center gap-3">
-            <span className="h-8 w-8 rounded-full bg-unstandard" aria-hidden />
-            <h2 className="font-display text-xl font-extrabold tracking-wide md:text-2xl">
-              PROFILE
-            </h2>
-            <span className="text-sm font-bold text-black/50">会社概要</span>
-          </div>
+          <SectionHeading en="PROFILE" ja="会社概要" center />
           <dl className="mx-auto max-w-3xl divide-y divide-black/10 border-y border-black/10">
             {profile.map((row) => (
               <div
@@ -161,6 +166,20 @@ export default async function AboutPage({
               </div>
             ))}
           </dl>
+
+          {/* google map of the company location (embed needs no API key) */}
+          <div className="mx-auto mt-10 max-w-3xl overflow-hidden rounded-2xl border border-black">
+            <iframe
+              title={`${tenant.shortName}の所在地`}
+              src={`https://www.google.com/maps?q=${encodeURIComponent(
+                `〒${tenant.postalCode} ${tenant.prefecture}${tenant.city}${tenant.street}`,
+              )}&output=embed`}
+              className="block h-72 w-full md:h-96"
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+              allowFullScreen
+            />
+          </div>
 
           <div className="mt-14 flex justify-center">
             <PillLink href={`/stores/${tenant.slug}`} back>

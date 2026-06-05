@@ -314,7 +314,7 @@ export default function ContactForm({
             </label>
             <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
               <div className="flex items-center gap-2">
-                <span className="text-sm">大人</span>
+                <span className="shrink-0 whitespace-nowrap text-sm">大人</span>
                 <input
                   id="adults"
                   name="adults"
@@ -326,7 +326,7 @@ export default function ContactForm({
                 <span className="text-sm">名</span>
               </div>
               <div className="flex items-center gap-2">
-                <span className="text-sm">お子様</span>
+                <span className="shrink-0 whitespace-nowrap text-sm">お子様</span>
                 <input
                   name="children"
                   type="number"
@@ -464,7 +464,7 @@ export default function ContactForm({
           </label>
           <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
             <div className="flex items-center gap-2">
-              <span className="text-sm">大人</span>
+              <span className="shrink-0 whitespace-nowrap text-sm">大人</span>
               <input
                 name="familyAdults"
                 type="number"
@@ -475,7 +475,7 @@ export default function ContactForm({
               <span className="text-sm">名</span>
             </div>
             <div className="flex items-center gap-2">
-              <span className="text-sm">お子様</span>
+              <span className="shrink-0 whitespace-nowrap text-sm">お子様</span>
               <input
                 name="familyChildren"
                 type="number"
