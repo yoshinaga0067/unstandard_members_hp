@@ -37,3 +37,4 @@ next-env.d.ts
 
 # Claude Code per-engineer overrides (the shared .claude/settings.json IS committed)
 .claude/settings.local.json
+.vercel
