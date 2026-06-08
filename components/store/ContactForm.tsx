@@ -4,13 +4,24 @@ import { useState } from "react";
 import { z } from "zod";
 
 // Inquiry types — drives which fields are shown.
-const TYPES = ["来店予約", "イベント予約", "お問い合わせ"] as const;
+const TYPES = ["来店予約", "イベント予約", "資料請求", "お問い合わせ"] as const;
 type InquiryType = (typeof TYPES)[number];
 
 // Store locations for the reservation.
 const STORES = ["店舗A", "店舗B"];
 // Visit time slots: 9:00–17:00, hourly.
 const TIMES = Array.from({ length: 9 }, (_, i) => `${9 + i}:00`);
+
+// Optional profile choices for 資料請求 (mirrors the main UNSTANDARD form).
+const PURCHASE_TIMES = ["1年以内", "2年以内", "2年以降", "未定"];
+const BUDGETS = [
+  "〜1,000万円",
+  "1,000〜1,500万円",
+  "1,500〜2,000万円",
+  "2,000〜2,500万円",
+  "2,500万円以上",
+  "未定",
+];
 
 // Validation schema — fields are conditionally required based on the inquiry type.
 const schema = z
@@ -24,6 +35,9 @@ const schema = z
     time2: z.string().optional(),
     adults: z.string().optional(),
     children: z.string().optional(),
+    materials: z.array(z.string()).optional(),
+    purchaseTime: z.string().optional(),
+    budget: z.string().optional(),
     name: z.string().trim().min(1, "お名前を入力してください"),
     kana: z.string().trim().min(1, "フリガナを入力してください"),
     postal: z.string().optional(),
@@ -44,6 +58,7 @@ const schema = z
   })
   .superRefine((v, ctx) => {
     const reserve = v.type === "来店予約" || v.type === "イベント予約";
+    const doc = v.type === "資料請求";
     const add = (path: string, message: string) =>
       ctx.addIssue({ code: "custom", path: [path], message });
 
@@ -57,6 +72,14 @@ const schema = z
       if (!v.adults || Number(v.adults) < 1)
         add("adults", "参加人数（大人）を1名以上でご入力ください");
       if (!v.address) add("address", "ご住所を入力してください");
+    }
+
+    // 資料請求: need at least one brochure and a mailing address.
+    if (doc) {
+      if (!v.materials || v.materials.length === 0)
+        add("materials", "ご希望の資料を1つ以上お選びください");
+      if (!v.address)
+        add("address", "資料の郵送先となるご住所を入力してください");
     }
 
     if (v.type === "お問い合わせ" && (v.message ?? "").trim().length < 10)
@@ -78,8 +101,13 @@ function Opt() {
 
 export default function ContactForm({
   events,
+  productGroups,
 }: {
   events: { id: number; title: string }[];
+  productGroups: {
+    label: string;
+    items: { title: string; image: string }[];
+  }[];
 }) {
   const [type, setType] = useState<InquiryType>("来店予約");
   const [errors, setErrors] = useState<FieldErrors>({});
@@ -93,6 +121,7 @@ export default function ContactForm({
   const [zipError, setZipError] = useState("");
 
   const isReserve = type === "来店予約" || type === "イベント予約";
+  const isDoc = type === "資料請求";
 
   const lookupZip = async () => {
     const code = postal.replace(/[^0-9]/g, "");
@@ -124,8 +153,10 @@ export default function ContactForm({
     e.preventDefault();
     const fd = new FormData(e.currentTarget);
     const data = Object.fromEntries(fd.entries());
+    // Checkboxes share one name → collect every checked value.
+    const materials = fd.getAll("materials").map(String);
 
-    const result = schema.safeParse(data);
+    const result = schema.safeParse({ ...data, materials });
     if (!result.success) {
       const next: FieldErrors = {};
       for (const issue of result.error.issues) {
@@ -342,6 +373,55 @@ export default function ContactForm({
         </>
       )}
 
+      {/* 資料請求の項目（資料請求のときのみ） */}
+      {isDoc && (
+        <fieldset id="materials">
+          <legend className="mb-1.5 block text-sm font-bold">
+            ご希望の資料
+            <Req />
+          </legend>
+          <p className="mb-3 text-xs text-black/55">
+            資料をご希望の商品をお選びください（複数選択できます）
+          </p>
+          <div className="space-y-4">
+            {productGroups.map((group) => (
+              <div key={group.label}>
+                <p className="mb-2 text-xs font-bold text-black/45">
+                  {group.label}
+                </p>
+                <div className="grid gap-2 sm:grid-cols-2">
+                  {group.items.map(({ title, image }) => (
+                    <label
+                      key={title}
+                      className="flex cursor-pointer items-center gap-2.5 rounded-xl border border-black/15 px-2.5 py-2 text-sm transition hover:border-black"
+                    >
+                      <input
+                        type="checkbox"
+                        name="materials"
+                        value={title}
+                        className="accent-black"
+                      />
+                      {/* small square product thumbnail — contain so the whole
+                          house render fits without cropping (transparent PNG) */}
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        src={image}
+                        alt=""
+                        aria-hidden="true"
+                        loading="lazy"
+                        className="h-11 w-11 shrink-0 rounded-md bg-neutral-50 object-contain p-0.5"
+                      />
+                      <span className="leading-snug">{title}</span>
+                    </label>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+          {err("materials")}
+        </fieldset>
+      )}
+
       {/* お名前 / フリガナ */}
       <div className="grid gap-5 md:grid-cols-2">
         <div>
@@ -409,7 +489,7 @@ export default function ContactForm({
       <div>
         <label htmlFor="address" className="mb-1.5 block text-sm font-bold">
           ご住所
-          {isReserve ? <Req /> : <Opt />}
+          {isReserve || isDoc ? <Req /> : <Opt />}
         </label>
         <input
           id="address"
@@ -487,6 +567,57 @@ export default function ContactForm({
             </div>
           </div>
         </div>
+      )}
+
+      {/* ご検討状況（資料請求のときのみ・任意） */}
+      {isDoc && (
+        <>
+          <fieldset>
+            <legend className="mb-2 block text-sm font-bold">
+              ご購入時期
+              <Opt />
+            </legend>
+            <div className="flex flex-wrap gap-2.5">
+              {PURCHASE_TIMES.map((t) => (
+                <label
+                  key={t}
+                  className="flex cursor-pointer items-center gap-2 rounded-xl border border-black/15 px-4 py-2.5 text-sm transition hover:border-black"
+                >
+                  <input
+                    type="radio"
+                    name="purchaseTime"
+                    value={t}
+                    className="accent-black"
+                  />
+                  {t}
+                </label>
+              ))}
+            </div>
+          </fieldset>
+
+          <fieldset>
+            <legend className="mb-2 block text-sm font-bold">
+              ご予算
+              <Opt />
+            </legend>
+            <div className="flex flex-wrap gap-2.5">
+              {BUDGETS.map((b) => (
+                <label
+                  key={b}
+                  className="flex cursor-pointer items-center gap-2 rounded-xl border border-black/15 px-4 py-2.5 text-sm transition hover:border-black"
+                >
+                  <input
+                    type="radio"
+                    name="budget"
+                    value={b}
+                    className="accent-black"
+                  />
+                  {b}
+                </label>
+              ))}
+            </div>
+          </fieldset>
+        </>
       )}
 
       {/* ご相談内容 */}

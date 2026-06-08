@@ -11,7 +11,7 @@ export default function AboutSection({ tenant }: { tenant: Tenant }) {
       className="relative scroll-mt-28 bg-white py-16 md:py-24"
     >
       <Container>
-        <div className="grid items-center gap-10 md:grid-cols-[1fr_1.3fr] md:gap-14">
+        <div className="grid items-center gap-6 md:grid-cols-[26rem_1fr] md:gap-8">
           {/* left: copy */}
           <div>
             <p className="font-display text-3xl font-extrabold uppercase leading-none tracking-tight text-neutral-300 md:text-4xl">

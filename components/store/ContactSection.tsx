@@ -2,7 +2,25 @@ import Container from "@/components/Container";
 import SectionHeading from "./SectionHeading";
 import ContactForm from "./ContactForm";
 import { eventsForTenant } from "@/lib/events";
+import { PRODUCTS } from "@/lib/products";
 import type { Tenant } from "@/types";
+
+// Brochure choices for 資料請求, grouped by product series (with thumbnail).
+// Use the house exterior render (houseImage) as the thumbnail.
+const toItem = (p: (typeof PRODUCTS)[number]) => ({
+  title: p.title,
+  image: p.houseImage,
+});
+const productGroups = [
+  {
+    label: "NONDESIGN シリーズ",
+    items: PRODUCTS.filter((p) => p.title.startsWith("NONDESIGN")).map(toItem),
+  },
+  {
+    label: "WOODBOX シリーズ",
+    items: PRODUCTS.filter((p) => !p.title.startsWith("NONDESIGN")).map(toItem),
+  },
+];
 
 export default function ContactSection({ tenant }: { tenant: Tenant }) {
   const events = eventsForTenant(tenant.slug).map((e) => ({
@@ -50,7 +68,7 @@ export default function ContactSection({ tenant }: { tenant: Tenant }) {
 
           {/* contact form (transparent — shares the white card) */}
           <div className="mt-6">
-            <ContactForm events={events} />
+            <ContactForm events={events} productGroups={productGroups} />
           </div>
         </div>
       </Container>

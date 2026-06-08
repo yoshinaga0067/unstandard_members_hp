@@ -46,7 +46,7 @@ export default function VoiceSection() {
   return (
     <section id="voice" className="scroll-mt-28 bg-neutral-900 py-16 text-white md:py-24">
       <Container>
-        <div className="grid items-center gap-10 md:grid-cols-2">
+        <div className="grid items-center gap-10 lg:grid-cols-[24rem_480px] lg:justify-center lg:gap-16">
           {/* heading */}
           <div>
             <h2 className="font-display text-5xl font-extrabold uppercase leading-none tracking-tight md:text-7xl">
@@ -56,8 +56,16 @@ export default function VoiceSection() {
             <p className="mt-6 font-mono text-sm tracking-widest text-unstandard">
               [ {String(active + 1).padStart(2, "0")} / {String(N).padStart(2, "0")} ]
             </p>
-            <p className="mt-6 hidden max-w-sm text-sm leading-relaxed text-white/60 md:block">
-              UNSTANDARDで家を建てたお客様の声を集めました。カードをめくって、それぞれの「好き」が詰まった暮らしをのぞいてみてください。
+            <p className="mt-6 hidden max-w-sm text-sm leading-relaxed text-white/60 lg:block">
+              UNSTANDARDで家を建てた
+              <br />
+              お客様の声を集めました。
+              <br />
+              カードをめくって、
+              <br />
+              それぞれの「好き」が詰まった
+              <br />
+              暮らしをのぞいてみてください。
             </p>
           </div>
 
