@@ -1,4 +1,5 @@
 import Container from "@/components/Container";
+import Parallax from "@/components/Parallax";
 import PillLink from "./PillLink";
 import type { Tenant } from "@/types";
 
@@ -64,21 +65,25 @@ export default function AboutSection({ tenant }: { tenant: Tenant }) {
             </PillLink>
           </div>
 
-          {/* right: model-house photo + family illustration */}
+          {/* right: model-house photo + family illustration (layered parallax) */}
           <div className="relative">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src="/about-house.png"
-              alt={`${tenant.shortName}のモデルハウス`}
-              className="w-full"
-            />
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src="/about-family.svg"
-              alt=""
-              aria-hidden="true"
+            {/* house drifts slowly (background depth) */}
+            <Parallax distance={70}>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="/about-house.png"
+                alt={`${tenant.shortName}のモデルハウス`}
+                className="w-full"
+              />
+            </Parallax>
+            {/* family drifts more (foreground depth) */}
+            <Parallax
+              distance={150}
               className="pointer-events-none absolute -bottom-[6%] right-[4%] w-[22%] max-w-[150px]"
-            />
+            >
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src="/about-family.svg" alt="" aria-hidden="true" className="w-full" />
+            </Parallax>
           </div>
         </div>
       </Container>

@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { worksForTenant } from "@/lib/works";
 import { HERO_BANNERS } from "@/lib/hero";
+import Parallax from "@/components/Parallax";
 import type { Tenant } from "@/types";
 
 // doda-style hero carousel: a large centered square slide with peeking
@@ -150,14 +151,20 @@ export default function StoreHero({ tenant }: { tenant: Tenant }) {
         </button>
       </div>
 
-      {/* giant wordmark across the bottom — sits in front of the images */}
-      <div
-        className="pointer-events-none relative z-20 -mt-[3vw] w-full select-none whitespace-nowrap text-center font-display font-extrabold uppercase leading-none tracking-tighter text-black"
-        style={{ fontSize: "9.2vw" }}
-        aria-hidden
+      {/* giant wordmark across the bottom — sits in front of the images,
+          drifts on scroll so motion is visible right away */}
+      <Parallax
+        distance={70}
+        className="pointer-events-none relative z-20 -mt-[3vw] w-full"
       >
-        LIFE IS COLORFUL.
-      </div>
+        <div
+          className="select-none whitespace-nowrap text-center font-display font-extrabold uppercase leading-none tracking-tighter text-black"
+          style={{ fontSize: "9.2vw" }}
+          aria-hidden
+        >
+          LIFE IS COLORFUL.
+        </div>
+      </Parallax>
 
       {/* dots */}
       <div className="mt-5 flex justify-center gap-2 pb-6">
