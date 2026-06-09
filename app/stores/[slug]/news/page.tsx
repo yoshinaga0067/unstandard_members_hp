@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { notFound } from "next/navigation";
 import PillLink from "@/components/store/PillLink";
 import Container from "@/components/Container";
@@ -44,7 +45,7 @@ export default async function NewsPage({
           <ul className="divide-y divide-black/10 border-y border-black/10">
             {NEWS.map((n, i) => {
               const row = (
-                <div className="flex items-center gap-4 py-5">
+                <div className="flex items-center gap-4 py-5 transition-opacity group-hover:opacity-60">
                   {/* leading square thumbnail */}
                   {n.image && (
                     <div className="h-20 w-20 shrink-0 overflow-hidden rounded-lg bg-neutral-100">
@@ -73,13 +74,12 @@ export default async function NewsPage({
               );
               return (
                 <li key={i}>
-                  {n.href ? (
-                    <a href={n.href} className="block transition hover:opacity-60">
-                      {row}
-                    </a>
-                  ) : (
-                    row
-                  )}
+                  <Link
+                    href={n.href ?? `/stores/${tenant.slug}/news/${n.slug}`}
+                    className="group block"
+                  >
+                    {row}
+                  </Link>
                 </li>
               );
             })}

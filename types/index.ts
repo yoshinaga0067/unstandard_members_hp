@@ -79,6 +79,8 @@ export interface Voice {
 
 /** お知らせ（NEWS）。ヒーロー直下に小さく表示する更新情報。 */
 export interface NewsItem {
+  /** 詳細ページのURLに使う識別子（例：open-house-0614） */
+  slug: string;
   /** 表示用の日付（例：2026.05.28） */
   date: string;
   /** 種別タグ（お知らせ・イベント・施工事例 等） */
@@ -87,7 +89,9 @@ export interface NewsItem {
   title: string;
   /** 先頭に表示する正方形サムネイル画像（任意） */
   image?: string;
-  /** リンク先（任意） */
+  /** 詳細ページの本文（段落の配列・任意） */
+  body?: string[];
+  /** 外部リンク先（指定すると詳細ページではなくここへ遷移・任意） */
   href?: string;
 }
 

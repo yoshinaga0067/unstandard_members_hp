@@ -1,3 +1,4 @@
+import Link from "next/link";
 import Container from "@/components/Container";
 import PillLink from "./PillLink";
 import { NEWS } from "@/lib/news";
@@ -21,8 +22,8 @@ export default function NewsSection({ slug }: { slug: string }) {
         <ul className="mt-8 border-t border-black/10">
           {NEWS.map((n, i) => (
             <li key={i}>
-              <a
-                href={`/stores/${slug}/news`}
+              <Link
+                href={n.href ?? `/stores/${slug}/news/${n.slug}`}
                 className="group relative flex flex-wrap items-center gap-x-4 gap-y-2 border-b border-black/10 py-5 after:absolute after:bottom-[-1px] after:left-0 after:h-px after:w-full after:origin-right after:scale-x-0 after:bg-black after:transition-transform after:duration-700 after:[transition-timing-function:cubic-bezier(.19,1,.22,1)] hover:after:origin-left hover:after:scale-x-100 md:py-6"
               >
                 {/* date */}
@@ -52,7 +53,7 @@ export default function NewsSection({ slug }: { slug: string }) {
                     <path d="M9 5l7 7-7 7" />
                   </svg>
                 </span>
-              </a>
+              </Link>
             </li>
           ))}
         </ul>
