@@ -48,7 +48,10 @@ export default function StoreFooter({ tenant }: { tenant: Tenant }) {
           )}
         </div>
         <div className="md:text-right">
-          <Link href="/" className="font-display text-3xl font-extrabold">
+          <Link
+            href={`/stores/${tenant.slug}`}
+            className="font-display text-3xl font-extrabold"
+          >
             UNSTANDARD
           </Link>
           <p className="mt-6 text-xs text-white/40">
