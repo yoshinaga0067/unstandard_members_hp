@@ -1,10 +1,17 @@
+"use client";
+
 import Carousel from "./Carousel";
 import WorkCard from "@/components/WorkCard";
 import { worksForTenant } from "@/lib/works";
+import { usePublicItems, publicId } from "@/lib/usePublicItems";
 import type { Tenant } from "@/types";
 
 export default function WorksSection({ tenant }: { tenant: Tenant }) {
-  const works = worksForTenant(tenant.slug);
+  const works = usePublicItems(
+    "works",
+    tenant.slug,
+    worksForTenant(tenant.slug)
+  );
   if (works.length === 0) return null;
 
   return (
@@ -18,10 +25,10 @@ export default function WorksSection({ tenant }: { tenant: Tenant }) {
       moreHref={`/stores/${tenant.slug}/works`}
     >
       {works.map((work) => (
-        <div key={work.id} className="w-52 shrink-0 sm:w-56">
+        <div key={publicId(work)} className="w-52 shrink-0 sm:w-56">
           <WorkCard
             work={work}
-            href={`https://unstandard-members.com/${tenant.slug}/works/${work.id}/`}
+            href={`/stores/${tenant.slug}/works/${publicId(work)}`}
           />
         </div>
       ))}

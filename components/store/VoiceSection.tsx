@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import Container from "@/components/Container";
 import { VOICES } from "@/lib/voices";
+import { usePublicItems } from "@/lib/usePublicItems";
 import { rainbowAt } from "@/lib/theme";
 
 function parse(label: string, text: string) {
@@ -14,7 +15,8 @@ function parse(label: string, text: string) {
 }
 
 export default function VoiceSection() {
-  const N = VOICES.length;
+  const voices = usePublicItems("voices", null, VOICES);
+  const N = voices.length;
   const [active, setActive] = useState(0);
   const [hovering, setHovering] = useState(false);
   const [modal, setModal] = useState<number | null>(null);
@@ -95,7 +97,7 @@ export default function VoiceSection() {
             </button>
 
             <div className="relative h-[430px] w-full max-w-[320px]">
-              {VOICES.map((v, i) => {
+              {voices.map((v, i) => {
                 const pos = (i - active + N) % N;
                 const { who, product, body } = parse(v.label, v.text);
                 return (
@@ -179,7 +181,7 @@ export default function VoiceSection() {
 
       {modal !== null &&
         (() => {
-          const v = VOICES[modal];
+          const v = voices[modal];
           const { who, product, body } = parse(v.label, v.text);
           return (
             <div

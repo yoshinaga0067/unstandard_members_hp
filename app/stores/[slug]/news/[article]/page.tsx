@@ -4,8 +4,12 @@ import { notFound } from "next/navigation";
 import PillLink from "@/components/store/PillLink";
 import Container from "@/components/Container";
 import StoreShell from "@/components/store/StoreShell";
+import NewsDetailFallback from "@/components/store/NewsDetailFallback";
 import { TENANTS, getTenant } from "@/lib/tenants";
 import { NEWS, getNews } from "@/lib/news";
+
+// Allow on-demand rendering for items created in the demo CMS (not pre-built).
+export const dynamicParams = true;
 
 // One static page per store × news article.
 export function generateStaticParams() {
@@ -36,8 +40,15 @@ export default async function NewsArticlePage({
 }) {
   const { slug, article } = await params;
   const tenant = getTenant(slug);
+  if (!tenant) notFound();
   const news = getNews(article);
-  if (!tenant || !news) notFound();
+  // not in the static data → it was created in the demo CMS; resolve client-side
+  if (!news)
+    return (
+      <StoreShell tenant={tenant}>
+        <NewsDetailFallback tenant={tenant} articleSlug={article} />
+      </StoreShell>
+    );
 
   // prev / next within the shared news list
   const idx = NEWS.findIndex((n) => n.slug === news.slug);

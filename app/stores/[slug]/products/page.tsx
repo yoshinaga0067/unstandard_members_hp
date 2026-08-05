@@ -3,9 +3,8 @@ import { notFound } from "next/navigation";
 import PillLink from "@/components/store/PillLink";
 import Container from "@/components/Container";
 import StoreShell from "@/components/store/StoreShell";
-import ProductCard from "@/components/store/ProductCard";
+import ProductsListClient from "@/components/store/ProductsListClient";
 import { TENANTS, getTenant } from "@/lib/tenants";
-import { PRODUCTS } from "@/lib/products";
 
 export function generateStaticParams() {
   return TENANTS.map((t) => ({ slug: t.slug }));
@@ -43,11 +42,7 @@ export default async function ProductsPage({
               商品ラインナップ
             </span>
           </div>
-          <div className="grid grid-cols-1 gap-x-6 gap-y-12 sm:grid-cols-2 lg:grid-cols-3">
-            {PRODUCTS.map((p, i) => (
-              <ProductCard key={i} product={p} />
-            ))}
-          </div>
+          <ProductsListClient />
           <div className="mt-14 flex justify-center">
             <PillLink href={`/stores/${tenant.slug}`} back>
               トップへ

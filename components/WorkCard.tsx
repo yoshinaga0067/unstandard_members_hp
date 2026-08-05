@@ -1,11 +1,15 @@
+import Link from "next/link";
 import type { Work } from "@/types";
 
 export default function WorkCard({
   work,
   href,
+  external = false,
 }: {
   work: Work;
   href?: string;
+  /** open in a new tab (legacy external links). internal routes use next/link. */
+  external?: boolean;
 }) {
   const cls =
     "group flex h-full flex-col overflow-hidden rounded-xl border border-black transition duration-200 hover:-translate-y-1";
@@ -41,10 +45,17 @@ export default function WorkCard({
   );
 
   if (href) {
+    if (external) {
+      return (
+        <a href={href} target="_blank" rel="noopener noreferrer" className={cls}>
+          {inner}
+        </a>
+      );
+    }
     return (
-      <a href={href} target="_blank" rel="noopener noreferrer" className={cls}>
+      <Link href={href} className={cls}>
         {inner}
-      </a>
+      </Link>
     );
   }
   return <div className={cls}>{inner}</div>;

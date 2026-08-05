@@ -95,6 +95,14 @@ export interface NewsItem {
   href?: string;
 }
 
+/**
+ * 記事ブロック（note風の本文）。詳細ページを「見出し・文章・画像」の積み重ねで組み立てる。
+ */
+export type ContentBlock =
+  | { type: "heading"; text: string }
+  | { type: "text"; text: string }
+  | { type: "image"; src: string; caption?: string };
+
 /** イベント（EVENT）。 */
 export interface EventItem {
   id: number;
@@ -102,6 +110,22 @@ export interface EventItem {
   image: string;
   /** 種別タグ（相談会・キャンペーン 等） */
   tags: string[];
+  /** 開催日（任意・例：2026.06.14） */
+  date?: string;
+  /** 開催時間（任意・例：10:00〜17:00） */
+  time?: string;
+  /** 会場（任意） */
+  place?: string;
+  /** 会場住所（任意） */
+  address?: string;
+  /** 駐車場（任意・例：あり（10台）） */
+  parking?: string;
+  /** 来場特典（任意・1ブロックの文章） */
+  benefit?: string;
+  /** note風の本文ブロック（任意・あればこちらを優先表示） */
+  content?: ContentBlock[];
+  /** 旧：段落だけの本文（任意・content が無い場合のフォールバック） */
+  body?: string[];
 }
 
 /** メディア記事（MEDIA）。本部 unstandard.jp の共有メディア。 */
@@ -124,4 +148,22 @@ export interface Work {
   tags: string[];
   /** 本部事例（全店共有）かどうか */
   shared: boolean;
+  /** note風の本文ブロック（任意・あればこちらを優先表示） */
+  content?: ContentBlock[];
+  /** 旧：段落だけの本文（任意・content が無い場合のフォールバック） */
+  body?: string[];
+  /** エリア・地域（任意） */
+  area?: string;
+  /** 延床面積（任意・例：32坪（105.98㎡）） */
+  floorArea?: string;
+  /** 間取り（任意・例：3LDK） */
+  madori?: string;
+  /** 価格帯（任意・プリセットから選択） */
+  priceRange?: string;
+  /** 写真ギャラリー（任意・複数画像URL） */
+  gallery?: string[];
+  /** 間取り図画像（任意・単一） */
+  floorPlan?: string;
+  /** 施主の声（任意・1ブロックの文章） */
+  ownerVoice?: string;
 }

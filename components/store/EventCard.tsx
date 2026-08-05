@@ -1,17 +1,18 @@
+import Link from "next/link";
 import type { EventItem } from "@/types";
 
 export default function EventCard({
   event,
   slug,
+  href,
 }: {
   event: EventItem;
   slug: string;
+  href?: string;
 }) {
   return (
-    <a
-      href={`https://unstandard-members.com/${slug}/event/${event.id}/`}
-      target="_blank"
-      rel="noopener noreferrer"
+    <Link
+      href={href ?? `/stores/${slug}/events/${event.id}`}
       className="group block transition duration-200 hover:-translate-y-1"
     >
       <div className="relative aspect-square overflow-hidden rounded-xl border border-black bg-black/5">
@@ -36,6 +37,6 @@ export default function EventCard({
           </span>
         ))}
       </div>
-    </a>
+    </Link>
   );
 }

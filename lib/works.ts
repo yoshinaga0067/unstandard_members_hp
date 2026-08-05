@@ -12,6 +12,33 @@ export const WORKS: Work[] = [
     image: "https://unstandard-members.com/wp-members/wp-content/uploads/2025/08/f5dfebd59cf335ce4a3fd08b8fb54d3a-1024x759.jpg",
     tags: ["NONDESIGN SERIES", "二階建て"],
     shared: true,
+    area: "福島県郡山市",
+    floorArea: "32坪（105.98㎡）",
+    madori: "3LDK",
+    priceRange: "2,000万円台",
+    content: [
+      {
+        type: "text",
+        text: "外の気配を感じながら、内に集中できる。ギャラリーのように作品や植物を飾れる余白を各所に設けた、感性が満たされる住まいです。",
+      },
+      {
+        type: "image",
+        src: "https://unstandard-members.com/wp-members/wp-content/uploads/2025/07/a40b3b92ec22552ea2a03bdd5b7793dd-768x1024.jpg",
+        caption: "光が回り込む、明るいリビング",
+      },
+      { type: "heading", text: "視線の抜けを、設計する" },
+      {
+        type: "text",
+        text: "光の入り方や視線の抜けを設計段階から丁寧に検討し、どこにいても居心地のよい場所が見つかる間取りに。素材は経年で味わいが増す自然素材を中心に選びました。",
+      },
+      {
+        type: "image",
+        src: "https://unstandard-members.com/wp-members/wp-content/uploads/2025/07/67b047e4cf189585e7de56463b225a4b-1024x703.jpg",
+        caption: "家じゅうを回遊できる動線",
+      },
+    ],
+    ownerVoice:
+      "「好き」を一つひとつ拾い上げてもらえたのが嬉しかったです。暮らし始めてから、家にいる時間がいちばん好きになりました。（福島県・I様）",
   },
   {
     id: 1707,
@@ -162,4 +189,9 @@ const WORK_MAP = new Map(WORKS.map((w) => [w.id, w]));
 export function worksForTenant(slug: string): Work[] {
   const ids = WORKS_BY_TENANT[slug] ?? [];
   return ids.map((id) => WORK_MAP.get(id)).filter((w): w is Work => Boolean(w));
+}
+
+/** 施工事例を id で1件返す。 */
+export function getWork(id: number): Work | undefined {
+  return WORK_MAP.get(id);
 }

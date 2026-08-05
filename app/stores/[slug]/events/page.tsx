@@ -3,9 +3,8 @@ import { notFound } from "next/navigation";
 import PillLink from "@/components/store/PillLink";
 import Container from "@/components/Container";
 import StoreShell from "@/components/store/StoreShell";
-import EventCard from "@/components/store/EventCard";
+import EventsGridClient from "@/components/store/EventsGridClient";
 import { TENANTS, getTenant } from "@/lib/tenants";
-import { eventsForTenant } from "@/lib/events";
 
 export function generateStaticParams() {
   return TENANTS.map((t) => ({ slug: t.slug }));
@@ -30,7 +29,6 @@ export default async function EventsPage({
   const { slug } = await params;
   const tenant = getTenant(slug);
   if (!tenant) notFound();
-  const events = eventsForTenant(tenant.slug);
 
   return (
     <StoreShell tenant={tenant}>
@@ -44,15 +42,7 @@ export default async function EventsPage({
               イベント情報
             </span>
           </div>
-          {events.length === 0 ? (
-            <p className="text-black/50">現在、開催予定のイベントはありません。</p>
-          ) : (
-            <div className="grid grid-cols-2 gap-5 sm:grid-cols-3 lg:grid-cols-4">
-              {events.map((ev) => (
-                <EventCard key={ev.id} event={ev} slug={tenant.slug} />
-              ))}
-            </div>
-          )}
+          <EventsGridClient slug={tenant.slug} />
           <div className="mt-14 flex justify-center">
             <PillLink href={`/stores/${tenant.slug}`} back>
               トップへ
